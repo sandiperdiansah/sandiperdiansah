@@ -52,58 +52,6 @@ export const PROJECTS: ProjectType[] = [
             source: '#',
         },
     },
-    {
-        title: 'E-Commerce Dashboard',
-        description:
-            'A responsive admin panel built with Next.js, Tailwind CSS, and PostgreSQL for inventory management.',
-        thumbnail:
-            'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop',
-
-        tech: [
-            {
-                icon: SiNextdotjs,
-                label: 'Next.js',
-            },
-            {
-                icon: SiTailwindcss,
-                label: 'Tailwind',
-            },
-            {
-                icon: SiPostgresql,
-                label: 'PostgreSQL',
-            },
-        ],
-        links: {
-            demo: '#',
-            source: '#',
-        },
-    },
-    {
-        title: 'E-Commerce Dashboard',
-        description:
-            'A responsive admin panel built with Next.js, Tailwind CSS, and PostgreSQL for inventory management.',
-        thumbnail:
-            'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop',
-
-        tech: [
-            {
-                icon: SiNextdotjs,
-                label: 'Next.js',
-            },
-            {
-                icon: SiTailwindcss,
-                label: 'Tailwind',
-            },
-            {
-                icon: SiPostgresql,
-                label: 'PostgreSQL',
-            },
-        ],
-        links: {
-            demo: '#',
-            source: '#',
-        },
-    },
 ];
 
 export const TECH_ICONS: TechIconType = {

@@ -9,6 +9,7 @@ const ColorModeButton = () => {
 
     return (
         <button
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className="hover:bg-accent flex items-center justify-center rounded-lg p-2 transition-colors duration-300"
             aria-label="toggle theme"
         >

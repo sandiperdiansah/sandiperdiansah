@@ -29,7 +29,7 @@ const About = () => {
     return (
         <section
             id="about"
-            className="p-4 md:p-6"
+            className="px-4 py-20 md:px-6"
             style={{ backgroundColor: 'var(--background)' }}
         >
             <div className="mx-auto md:max-w-4xl">

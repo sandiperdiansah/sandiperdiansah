@@ -33,7 +33,7 @@ const Skills = () => {
     return (
         <section
             id="skills"
-            className="px-6 py-20"
+            className="px-4 py-20 md:px-6"
             style={{ backgroundColor: 'var(--accent)' }}
         >
             <div className="mx-auto flex max-w-6xl flex-col items-center justify-center">

@@ -58,7 +58,7 @@ const Contact = () => {
     return (
         <section
             id="contact"
-            className="px-6 py-20"
+            className="px-4 py-20 md:px-6"
             style={{ backgroundColor: 'var(--accent)' }}
         >
             <div className="mx-auto max-w-6xl">

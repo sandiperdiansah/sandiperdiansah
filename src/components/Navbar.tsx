@@ -4,12 +4,14 @@ import { MotionDiv } from '@/components/Motion';
 import { NAV_ITEMS } from '@/constants';
 import Link from 'next/link';
 import { useState } from 'react';
+import { FaBars, FaTimes } from 'react-icons/fa';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <nav className="glass fixed top-0 z-50 flex h-16 w-full items-center justify-center px-4">
+        <nav className="glass fixed top-0 z-50 flex h-16 w-full items-center justify-between px-4">
+            <div></div> {/* Spacer */}
             <ul className="hidden space-x-8 md:flex">
                 {NAV_ITEMS.map((item) => (
                     <li key={item.name}>
@@ -23,6 +25,14 @@ const Navbar = () => {
                     </li>
                 ))}
             </ul>
+            <button
+                className="md:hidden text-2xl"
+                onClick={() => setIsOpen(!isOpen)}
+                style={{ color: 'var(--secondary)' }}
+                aria-label="Toggle menu"
+            >
+                {isOpen ? <FaTimes /> : <FaBars />}
+            </button>
 
             {/* Mobile Menu */}
             <MotionDiv

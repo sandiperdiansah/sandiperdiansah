@@ -6,7 +6,7 @@ const Projects = () => {
     return (
         <section
             id="projects"
-            className="px-6 py-20"
+            className="px-4 py-20 md:px-6"
             style={{ backgroundColor: 'var(--background)' }}
         >
             <div className="mx-auto max-w-6xl">

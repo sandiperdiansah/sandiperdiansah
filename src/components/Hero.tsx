@@ -5,7 +5,7 @@ import { useUseTextAnimation } from '@/hooks/useTextAnimation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaChevronDown } from 'react-icons/fa';
-import { FadeIn, MotionDiv, ScaleIn } from './Motion';
+import { MotionDiv, ScaleIn } from './Motion';
 
 const Hero = () => {
     const { text } = useUseTextAnimation();
@@ -13,7 +13,7 @@ const Hero = () => {
     return (
         <section
             id="home"
-            className="flex min-h-screen items-center justify-center p-4 pt-20 md:p-6"
+            className="flex min-h-screen items-center justify-center px-4 pt-20 py-20 md:px-6"
             style={{ backgroundColor: 'var(--background)' }}
         >
             <div className="mx-auto max-w-4xl text-center">
@@ -47,7 +47,11 @@ const Hero = () => {
                     </div>
                     <ButtonPrimary href="#projects">View my work</ButtonPrimary>
                 </MotionDiv>
-                <FadeIn transition={{ delay: 1 }}>
+                <MotionDiv
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1 }}
+                >
                     <Link
                         href="#about"
                         className="hover:text-primary flex items-center justify-center space-x-2 text-sm transition-colors duration-300"
@@ -59,7 +63,7 @@ const Hero = () => {
                             size={16}
                         />
                     </Link>
-                </FadeIn>
+                </MotionDiv>
             </div>
         </section>
     );
