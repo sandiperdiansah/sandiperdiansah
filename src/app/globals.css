@@ -1,0 +1,53 @@
+@import 'tailwindcss';
+
+@layer base {
+    :root {
+        --background: #ffffff;
+        --foreground: #000000;
+        --primary: #14b8a6;
+        --secondary: #64748b;
+        --accent: #f1f5f9;
+    }
+
+    .dark {
+        --background: #0f172a;
+        --foreground: #f8fafc;
+        --primary: #2dd4bf;
+        --secondary: #94a3b8;
+        --accent: #1e293b;
+    }
+
+    html {
+        scroll-behavior: smooth;
+        background-color: var(--background);
+        color: var(--foreground);
+    }
+}
+
+@layer components {
+    .animate-fade-in {
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .glass {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .dark .glass {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+}
