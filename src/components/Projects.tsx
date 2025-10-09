@@ -29,7 +29,7 @@ const projects = [
         description: 'Explore Design with Next.js',
         image: '/myuiexplore.png',
         tags: ['Next.js', 'Tailwindcss'],
-        demoUrl: '#',
+        demoUrl: 'https://my-ui-explore.vercel.app',
         githubUrl: '#',
         color: 'from-purple-500 to-pink-500',
     },
