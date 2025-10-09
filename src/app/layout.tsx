@@ -1,24 +1,46 @@
-import { Providers } from '@/components/Providers';
+import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { ThemeProvider } from 'next-themes';
+import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const geistSans = Geist({
+    variable: '--font-geist-sans',
+    subsets: ['latin'],
+});
+const geistMono = Geist_Mono({
+    variable: '--font-geist-mono',
+    subsets: ['latin'],
+});
 
 export const metadata: Metadata = {
-    title: 'Sandi Perdiansah - Fullstack Web Developer',
-    description:
-        'Portfolio of Sandi Perdiansah, specializing in fullstack web development with React, Next.js, and more.',
+    title: 'SP',
+    description: 'Portfolio Next.js',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+    children,
+}: Readonly<{
+    children: React.ReactNode;
+}>) {
     return (
         <html
             lang="en"
             suppressHydrationWarning
         >
-            <body className={`${inter.className} min-h-screen`}>
-                <Providers>{children}</Providers>
+            <body
+                className={`${geistSans.variable} ${geistMono.variable} antialiased transition-colors`}
+            >
+                <ThemeProvider
+                    attribute="data-theme"
+                    defaultTheme="system"
+                    enableSystem={true}
+                >
+                    <Navbar />
+                    {children}
+                    <Footer />
+                </ThemeProvider>
             </body>
         </html>
     );

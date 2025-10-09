@@ -5,41 +5,28 @@ import Image from 'next/image';
 
 const projects = [
     {
-        title: 'EcoTrack Dashboard',
+        title: 'Qalmi',
         description:
-            'A real-time analytics dashboard for environmental monitoring, built with Next.js and WebSocket for live data visualization.',
-        image: '/profile.jpg',
-        tags: ['Next.js', 'TypeScript', 'TailwindCSS', 'WebSocket'],
-        demoUrl: '#',
-        githubUrl: '#',
+            'Qalmi is a social media platform built exclusively for the Muslim community. It provides a safe and positive online space where users can share, connect, and express themselves while staying aligned with Islamic values. Any content or posts that contradict Muslim principles are automatically filtered and restricted to maintain a respectful environment.',
+        image: '/qalmi.png',
+        tags: [
+            'Next.js',
+            'TypeScript',
+            'TailwindCSS',
+            'WebSocket',
+            'Express.js',
+            'PostgreSQL',
+        ],
+        demoUrl: 'https://qalmi.vercel.app',
+        githubUrl: 'https://github.com/sandiperdiansah/Qalmi.git',
         color: 'from-emerald-500 to-teal-500',
-    },
-    {
-        title: 'CryptoFlow',
-        description:
-            'Cryptocurrency trading platform with advanced charting capabilities and real-time market data integration.',
-        image: '/profile.jpg',
-        tags: ['React', 'Node.js', 'MongoDB', 'WebSocket'],
-        demoUrl: '#',
-        githubUrl: '#',
-        color: 'from-blue-500 to-indigo-500',
-    },
-    {
-        title: 'AI Content Studio',
-        description:
-            'Content generation platform powered by AI, helping creators produce high-quality content efficiently.',
-        image: '/profile.jpg',
-        tags: ['Next.js', 'OpenAI', 'PostgreSQL', 'AWS'],
-        demoUrl: '#',
-        githubUrl: '#',
-        color: 'from-purple-500 to-pink-500',
     },
 ];
 
-export default function Projects() {
+export default function OngoingProject() {
     return (
         <section
-            id="projects"
+            id="ongoing-projects"
             className="relative bg-white py-20 dark:bg-black"
         >
             {/* Background Effects */}
@@ -54,7 +41,7 @@ export default function Projects() {
                         viewport={{ once: true }}
                         className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-3xl font-bold text-transparent lg:text-4xl dark:from-purple-400 dark:to-indigo-400"
                     >
-                        Featured Projects
+                        Ongoing Projects
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
@@ -63,7 +50,7 @@ export default function Projects() {
                         transition={{ delay: 0.2 }}
                         className="mt-4 text-lg text-gray-600 dark:text-gray-300"
                     >
-                        Showcasing some of my recent work and passion projects
+                        Showcasing some of my ongoing projects
                     </motion.p>
                 </div>
 
