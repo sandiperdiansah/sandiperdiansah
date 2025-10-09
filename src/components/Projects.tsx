@@ -25,11 +25,10 @@ const projects = [
         color: 'from-blue-500 to-indigo-500',
     },
     {
-        title: 'AI Content Studio',
-        description:
-            'Content generation platform powered by AI, helping creators produce high-quality content efficiently.',
-        image: '/profile.jpg',
-        tags: ['Next.js', 'OpenAI', 'PostgreSQL', 'AWS'],
+        title: 'My Ui Explore',
+        description: 'Explore Design with Next.js',
+        image: '/myuiexplore.png',
+        tags: ['Next.js', 'Tailwindcss'],
         demoUrl: '#',
         githubUrl: '#',
         color: 'from-purple-500 to-pink-500',

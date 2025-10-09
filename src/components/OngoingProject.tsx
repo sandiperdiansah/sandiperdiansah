@@ -41,7 +41,7 @@ export default function OngoingProject() {
                         viewport={{ once: true }}
                         className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-3xl font-bold text-transparent lg:text-4xl dark:from-purple-400 dark:to-indigo-400"
                     >
-                        Ongoing Projects
+                        Comming Soon
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
