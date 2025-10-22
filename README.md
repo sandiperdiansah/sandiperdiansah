@@ -17,9 +17,7 @@
 [![MongoDB](https://img.shields.io/badge/-MongoDB-000?style=flat&logo=mongodb)](https://www.mongodb.com)
 
 
-I'm a passionate **Fullstack Developer** who loves building scalable, aesthetic, and high-performance web applications.  
-I combine clean design, modern technologies, and AI integration to create digital experiences that *feel* alive.  
-I enjoy crafting intuitive interfaces on the frontend and designing efficient data structures on the backend — all while keeping code maintainable and elegant.
+A dedicated Full Stack Developer who loves crafting modern, scalable, and user-centric web applications with clean design and powerful performance.
 
 
 ## Get in touch
