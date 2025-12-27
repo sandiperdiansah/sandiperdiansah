@@ -6,29 +6,30 @@
 
 ```ts
 class FullStackDeveloper {
-  public name: string;
-  public role: string;
-  public stack: {
-    languages: string[];
-    frameworks: string[];
-    tools: string[];
-  };
-
-  constructor() {
-    this.name = "Sandi Perdiansah";
-    this.role = "Full Stack Developer";
-    this.stack = {
-      languages: ["JavaScript", "TypeScript"],
-      frameworks: ["Angular", "React", "NestJS"],
-      tools: ["Git", "VS Code", "WebStorm"]
+    public name: string;
+    public role: string;
+    public stack: {
+        languages: string[];
+        frameworks: string[];
+        tools: string[];
     };
-  }
 
-  sayHello(): string {
-    return "Hello! Thanks for stopping by — feel free to explore my projects and contributions.";
-  }
+    constructor() {
+        this.name = "Sandi Perdiansah";
+        this.role = "Full Stack Developer";
+        this.stack = {
+            languages: ["JavaScript", "TypeScript"],
+            frameworks: ["Angular", "React", "NestJS"],
+            tools: ["Git", "VS Code", "WebStorm", "Antigravity"]
+        };
+    }
+
+    sayHello(): string {
+        return "Hello! Thanks for stopping by — feel free to explore my projects and contributions.";
+    }
 }
 
 const me = new FullStackDeveloper();
 me.sayHello();
+
 
