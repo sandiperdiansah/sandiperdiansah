@@ -4,32 +4,41 @@
   </a>
 </p>
 
-```ts
-class FullStackDeveloper {
-    public name: string;
-    public role: string;
-    public stack: {
-        languages: string[];
-        frameworks: string[];
-        tools: string[];
-    };
+# Hello there 👋
 
-    constructor() {
-        this.name = "Sandi Perdiansah";
-        this.role = "Full Stack Developer";
-        this.stack = {
-            languages: ["JavaScript", "TypeScript"],
-            frameworks: ["Angular", "React", "NestJS"],
-            tools: ["Git", "VS Code", "WebStorm", "Antigravity"]
-        };
-    }
+```json
 
-    sayHello(): string {
-        return "Hello! Thanks for stopping by — feel free to explore my projects and contributions.";
+{
+    "name": "Sandi Perdiansah",
+    "role": "Full Stack Developer",
+    "about": "A dedicated Full Stack Developer focused on building clean, scalable, and user-centric web applications with strong performance and thoughtful architecture.",
+
+    "stack": {
+        "languages": ["JavaScript", "TypeScript"],
+        "frameworks": ["React", "Next.js", "Angular", "NestJS", "Express"],
+        "databases": ["PostgreSQL", "MySQL", "MongoDB"],
+        "tools": ["Git", "VS Code", "WebStorm", "Antigravity", "ChatGPT"]
+    },
+
+    "blogs": [
+        {
+            "title": "Tips & Tricks: Building Scalable Web Apps",
+            "url": "https://sandiperdiansah.vercel.app/blog/scalable-web-apps"
+        },
+        {
+            "title": "JavaScript vs TypeScript: Best Practices",
+            "url": "https://sandiperdiansah.vercel.app/blog/js-vs-ts"
+        },
+        {
+            "title": "Angular + NestJS Fullstack Guide",
+            "url": "https://sandiperdiansah.vercel.app/blog/angular-nestjs"
+        }
+    ],
+
+    "contact": {
+        "portfolio": "https://sandiperdiansah.vercel.app",
+        "linkedin": "https://www.linkedin.com/in/sandi-perdiansah"
     }
 }
-
-const me = new FullStackDeveloper();
-me.sayHello();
 
 
