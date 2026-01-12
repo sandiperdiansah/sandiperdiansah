@@ -2,6 +2,7 @@
 {
 	"name": "Sandi Perdiansah",
 	"title": "Full Stack Developer",
+	"summary": "Full Stack Developer with experience across frontend and backend development, involved in designing, developing, and maintaining end-to-end application solutions with an emphasis on scalability and reliability.",
 	"skills": {
 		"languages": ["JavaScript", "TypeScript"],
 		"frameworks": ["Next.js", "NestJS", "Express"],
@@ -28,6 +29,7 @@
 		"linkedin": "https://www.linkedin.com/in/sandi-perdiansah"
 	}
 }
+
 ```
 
 <p align="right">
