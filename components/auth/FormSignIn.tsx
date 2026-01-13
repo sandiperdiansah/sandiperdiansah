@@ -12,17 +12,26 @@ import {
     FieldTitle,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import { useRouter } from 'next/navigation';
 import { useActionState, useEffect } from 'react';
 import { toast } from 'sonner';
 
 export const FormSignIn = () => {
     const [state, formAction, isPending] = useActionState(signInAction, null);
+    const router = useRouter();
 
     useEffect(() => {
-        if (state?.error?.message) {
-            toast.error(state.error.message);
+        if (state?.error?.general) {
+            toast.error(state.error.general);
         }
-    }, [state?.error?.message]);
+    }, [state?.error?.general]);
+
+    useEffect(() => {
+        if (state?.message) {
+            toast.success(state.message);
+            router.push('/cms/dashboard');
+        }
+    }, [state?.message, router]);
 
     return (
         <form
@@ -34,7 +43,9 @@ export const FormSignIn = () => {
                     <FieldTitle className="mb-2">
                         <h1 className="text-xl font-bold">Sign in to CMS</h1>
                     </FieldTitle>
-                    <FieldDescription>Use your email and password to continue</FieldDescription>
+                    <FieldDescription>
+                        Use your email and password to continue
+                    </FieldDescription>
 
                     <FieldGroup className="mt-4">
                         <Field data-invalid={!!state?.error?.fieldErrors?.email}>

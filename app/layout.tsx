@@ -31,6 +31,8 @@ const Layout = ({
                         <Toaster
                             position="top-right"
                             duration={3000}
+                            // theme="system"
+                            // className="w-2xs"
                         />
                     </div>
                 </ThemeProvider>

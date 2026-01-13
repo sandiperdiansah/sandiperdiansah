@@ -87,7 +87,7 @@ export const Sidebar = async () => {
                                         <button
                                             type="submit"
                                             aria-label="sign-out"
-                                            className="cursor-pointer"
+                                            className="w-full cursor-pointer justify-start text-start"
                                         >
                                             Sign out
                                         </button>

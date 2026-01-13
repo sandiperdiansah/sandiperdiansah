@@ -10,7 +10,13 @@
         "format": "prettier --write .",
         "postinstall": "prisma generate",
         "prisma:generate": "prisma generate",
-        "prisma:seed": "prisma db seed"
+        "prisma:generate:reset": "prisma generate reset",
+        "prisma:migrate": "prisma migrate dev",
+        "prisma:migrate:reset": "prisma migrate reset",
+        "prisma:db:seed": "prisma db seed",
+        "prisma:db:push": "prisma db push",
+        "prisma:db:pull": "prisma db pull",
+        "prisma:db:studio": "prisma studio"
     },
     "prisma": {
         "seed": "tsx prisma/seed.ts"
@@ -34,6 +40,7 @@
         "next": "16.1.1",
         "next-themes": "^0.4.6",
         "next-view-transitions": "^0.3.5",
+        "nextjs-toploader": "^3.9.17",
         "pg": "^8.16.3",
         "react": "19.2.3",
         "react-dom": "19.2.3",

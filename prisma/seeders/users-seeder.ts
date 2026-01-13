@@ -1,7 +1,9 @@
 import { auth } from '@/lib/auth';
 import { PrismaClient } from '@/prisma/generated/client';
 
-export const userSeeder = async (prisma: PrismaClient) => {
+export const userSeeder = async (prisma: PrismaClient): Promise<void> => {
+    console.log('START, SEED#USERS_SEED');
+
     const ADMIN_NAME = process.env.ADMIN_NAME;
     const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
     const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
@@ -21,11 +23,12 @@ export const userSeeder = async (prisma: PrismaClient) => {
             },
         });
 
-        console.log('SUCCESS, SEEDER#USER_SEEDER');
+        console.log('SUCCESS, SEED#USERS_SEED');
     } catch (error) {
-        console.log('ERROR, SEEDER#USER_SEEDER', error);
+        console.log('ERROR, SEED#USERS_SEED', error);
         process.exit(1);
     } finally {
+        console.log('END, SEED#USERS_SEED');
         await prisma.$disconnect();
     }
 };

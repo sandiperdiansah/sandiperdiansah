@@ -29,7 +29,9 @@ export const Navbar = () => {
                                     <Link
                                         href={`/cms/${route === 'cms' ? 'dashboard' : route}`}
                                         className={cn(
-                                            index === routes.length - 1 ? 'text-primary' : '',
+                                            index === routes.length - 1
+                                                ? 'text-primary'
+                                                : '',
                                         )}
                                     >
                                         {route}

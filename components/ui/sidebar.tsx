@@ -16,7 +16,12 @@ import {
     SheetTitle,
 } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 
@@ -91,7 +96,10 @@ function SidebarProvider({
     // Adds a keyboard shortcut to toggle the sidebar.
     React.useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === SIDEBAR_KEYBOARD_SHORTCUT && (event.metaKey || event.ctrlKey)) {
+            if (
+                event.key === SIDEBAR_KEYBOARD_SHORTCUT &&
+                (event.metaKey || event.ctrlKey)
+            ) {
                 event.preventDefault();
                 toggleSidebar();
             }
@@ -249,7 +257,11 @@ function Sidebar({
     );
 }
 
-function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<typeof Button>) {
+function SidebarTrigger({
+    className,
+    onClick,
+    ...props
+}: React.ComponentProps<typeof Button>) {
     const { open, toggleSidebar } = useSidebar();
 
     return (
@@ -346,7 +358,10 @@ function SidebarFooter({ className, ...props }: React.ComponentProps<'div'>) {
     );
 }
 
-function SidebarSeparator({ className, ...props }: React.ComponentProps<typeof Separator>) {
+function SidebarSeparator({
+    className,
+    ...props
+}: React.ComponentProps<typeof Separator>) {
     return (
         <Separator
             data-slot="sidebar-separator"
