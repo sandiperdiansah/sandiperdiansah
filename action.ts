@@ -158,15 +158,14 @@ export const findAllProjectAction = async (
             ...(isArchive ? {} : { deletedAt: null }),
         };
 
-        const [data, count] = await prisma.$transaction([
-            prisma.project.findMany({
-                where,
-                skip: (page - 1) * limit,
-                take: limit,
-                orderBy: { [order]: sort },
-            }),
-            prisma.project.count({ where }),
-        ]);
+        const data = await prisma.project.findMany({
+            where,
+            skip: (page - 1) * limit,
+            take: limit,
+            orderBy: { [order]: sort },
+        });
+
+        const count = await prisma.project.count({ where });
 
         console.log('SUCCESS, ACTION#PROJECT_FIND_ALL', data);
         return {
