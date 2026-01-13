@@ -2,7 +2,7 @@
     "plugins": ["prettier-plugin-tailwindcss"],
     "tailwindFunctions": ["clsx", "classnames", "cva"],
     "tabWidth": 4,
-    "printWidth": 90,
+    "printWidth": 100,
     "useTabs": false,
     "singleAttributePerLine": true,
     "singleQuote": true
