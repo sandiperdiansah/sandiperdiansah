@@ -1,9 +1,9 @@
+import { Spinner } from '@/components/ui/spinner';
+
 const Loading = () => {
     return (
-        <section className="fixed inset-0 z-999 flex min-h-screen flex-col items-center justify-center bg-white">
-            <div className="w-full max-w-sm rounded-lg p-8 md:shadow-sm">
-                <span>loading...</span>
-            </div>
+        <section className="flex min-h-screen items-center justify-center">
+            <Spinner className="text-primary size-20" />
         </section>
     );
 };
