@@ -30,12 +30,6 @@ export class CreateMsCategoriesTable1768383171246 implements MigrationInterface 
 						isNullable: true,
 					},
 					{
-						name: 'isActive',
-						type: 'boolean',
-						isNullable: false,
-						default: true,
-					},
-					{
 						name: 'createdAt',
 						type: 'timestamptz',
 						default: 'CURRENT_TIMESTAMP',

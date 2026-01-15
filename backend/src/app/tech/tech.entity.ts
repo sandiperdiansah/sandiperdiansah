@@ -22,9 +22,6 @@ export class TechEntity extends BaseEntity {
 	@Column({ type: 'text', nullable: true })
 	description?: string;
 
-	@Column({ type: 'boolean', nullable: false, default: true })
-	isActive: boolean;
-
 	@CreateDateColumn({ type: 'timestamptz' })
 	createdAt: Date;
 

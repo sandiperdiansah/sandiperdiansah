@@ -1,9 +1,11 @@
+import { MediaEntity } from '@/app/media/media.entity';
 import {
 	BaseEntity,
 	Column,
 	CreateDateColumn,
 	DeleteDateColumn,
 	Entity,
+	OneToMany,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
@@ -25,9 +27,6 @@ export class ProjectEntity extends BaseEntity {
 	@Column({ type: 'varchar', nullable: true })
 	thumbnail?: string;
 
-	@Column({ type: 'boolean', nullable: false, default: true })
-	isActive: boolean;
-
 	@CreateDateColumn({ type: 'timestamptz' })
 	createdAt: Date;
 
@@ -36,4 +35,7 @@ export class ProjectEntity extends BaseEntity {
 
 	@DeleteDateColumn({ type: 'timestamptz' })
 	deletedAt?: Date;
+
+	@OneToMany(() => MediaEntity, (media) => media.project)
+	medias?: MediaEntity[];
 }

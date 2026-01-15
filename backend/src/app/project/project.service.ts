@@ -1,3 +1,4 @@
+import { MediaEntity } from '@/app/media/media.entity';
 import {
 	CreateProjectDtoRequest,
 	FindAllProjectDtoQuery,
@@ -6,33 +7,62 @@ import {
 } from '@/app/project/dto';
 import { ProjectEntity } from '@/app/project/project.entity';
 import { ProjectRepository } from '@/app/project/project.repository';
-import {
-	DefaultWhereOrder,
-	DefaultWhereSort,
-	DefaultWhereStatus,
-	createUniqueSlugHelper,
-} from '@/default';
+import { DefaultWhereOrder, DefaultWhereSort, createUniqueSlugHelper } from '@/default';
 import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { FindOptionsWhere, Like } from 'typeorm';
+import { FindOptionsWhere, Like, QueryRunner } from 'typeorm';
 
 @Injectable()
 export class ProjectService {
 	constructor(private readonly projectRepository: ProjectRepository) {}
 
 	async create(request: CreateProjectDtoRequest): Promise<ProjectEntity> {
+		const queryRunner = this.projectRepository.dataSource.createQueryRunner();
+
+		await queryRunner.connect();
+		await queryRunner.startTransaction();
+
 		try {
 			const slug = createUniqueSlugHelper(request.slug);
-			await this.conflicProject(slug);
-			const entity = this.projectRepository.create({
-				...request,
-				slug,
+			await this.conflicProject(slug, queryRunner);
+
+			const projectEntity = await queryRunner.manager.save(
+				ProjectEntity,
+				queryRunner.manager.create(ProjectEntity, {
+					...request,
+					slug,
+				}),
+			);
+
+			if (request.medias && request.medias.length > 0) {
+				const mediaEntities = request.medias.map((media) => {
+					return queryRunner.manager.create(MediaEntity, {
+						...media,
+						project: projectEntity,
+					});
+				});
+
+				await queryRunner.manager.save(MediaEntity, mediaEntities);
+			}
+
+			const projectWithMedias = await queryRunner.manager.findOne(ProjectEntity, {
+				where: { id: projectEntity.id },
+				relations: ['medias'],
 			});
 
+			if (!projectWithMedias) {
+				throw new NotFoundException('Project not found after creation');
+			}
+
 			Logger.log('PROJECT_SERVICE#CREATE');
-			return await this.projectRepository.save(entity);
+			await queryRunner.commitTransaction();
+
+			return projectWithMedias;
 		} catch (error) {
 			Logger.error('PROJECT_SERVICE#CREATE', error);
+			await queryRunner.rollbackTransaction();
 			throw error;
+		} finally {
+			await queryRunner.release();
 		}
 	}
 
@@ -44,18 +74,11 @@ export class ProjectService {
 				sort = DefaultWhereSort.CREATED_AT,
 				order = DefaultWhereOrder.DESC,
 				search,
-				filterStatus,
 			} = query;
 
 			const where: FindOptionsWhere<ProjectEntity>[] = search
 				? [{ name: Like(`%${search}%`) }, { slug: Like(`%${search}%`) }]
 				: [{}];
-
-			if (filterStatus && filterStatus !== DefaultWhereStatus.ALL) {
-				where.forEach((project) => {
-					project.isActive = filterStatus === DefaultWhereStatus.ACTIVE;
-				});
-			}
 
 			const [data, count] = await this.projectRepository.findAndCount({
 				where,
@@ -81,12 +104,19 @@ export class ProjectService {
 		}
 	}
 
-	async findOne(id: string, withDeleted = false): Promise<ProjectEntity> {
+	async findOne(
+		id: string,
+		withDeleted = false,
+		queryRunner?: QueryRunner,
+	): Promise<ProjectEntity> {
 		try {
-			const entity = await this.projectRepository.findOne({
-				where: { id },
-				withDeleted,
-			});
+			const entity = await (queryRunner?.manager || this.projectRepository).findOne(
+				ProjectEntity,
+				{
+					where: { id },
+					withDeleted,
+				},
+			);
 
 			if (!entity) {
 				Logger.log('PROJECT_SERVICE#FIND_ONE');
@@ -102,23 +132,57 @@ export class ProjectService {
 	}
 
 	async update(id: string, request: UpdateProjectDtoRequest): Promise<ProjectEntity> {
+		const queryRunner = this.projectRepository.dataSource.createQueryRunner();
+
+		await queryRunner.connect();
+		await queryRunner.startTransaction();
+
 		try {
-			const entity = await this.findOne(id);
+			const entity = await this.findOne(id, false, queryRunner);
 
 			if (request.slug && request.slug !== entity.slug) {
-				await this.conflicProject(request.slug);
+				await this.conflicProject(request.slug, queryRunner);
 			}
 
-			await this.projectRepository.update(entity.id, {
-				...request,
-				slug: request.slug ? createUniqueSlugHelper(request.slug) : entity.slug,
+			const projectEntity = await queryRunner.manager.save(
+				ProjectEntity,
+				queryRunner.manager.merge(ProjectEntity, entity, {
+					...request,
+					slug: request.slug
+						? createUniqueSlugHelper(request.slug)
+						: entity.slug,
+				}),
+			);
+
+			if (request.medias && request.medias.length > 0) {
+				const mediaEntities = request.medias.map((media) => {
+					return queryRunner.manager.create(MediaEntity, {
+						...media,
+						project: projectEntity,
+					});
+				});
+
+				await queryRunner.manager.save(MediaEntity, mediaEntities);
+			}
+
+			const projectWithMedias = await queryRunner.manager.findOne(ProjectEntity, {
+				where: { id: projectEntity.id },
+				relations: ['medias'],
 			});
 
+			if (!projectWithMedias) {
+				throw new NotFoundException('Project not found after update');
+			}
+
 			Logger.log('PROJECT_SERVICE#UPDATE');
-			return this.findOne(entity.id);
+			await queryRunner.commitTransaction();
+			return projectWithMedias;
 		} catch (error) {
 			Logger.error('PROJECT_SERVICE#UPDATE', error);
+			await queryRunner.rollbackTransaction();
 			throw error;
+		} finally {
+			await queryRunner.release();
 		}
 	}
 
@@ -155,8 +219,10 @@ export class ProjectService {
 		}
 	}
 
-	private async conflicProject(slug: string): Promise<void> {
-		const entity = await this.projectRepository.findOneBy({ slug });
+	private async conflicProject(slug: string, queryRunner: QueryRunner): Promise<void> {
+		const entity = await queryRunner.manager.findOne(ProjectEntity, {
+			where: { slug },
+		});
 
 		if (entity) {
 			Logger.log('PROJECT_SERVICE#CONFLICT', entity);

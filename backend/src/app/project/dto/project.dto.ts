@@ -1,3 +1,4 @@
+import { MediaDto } from '@/app/media/dto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { v4 as uuid } from 'uuid';
 
@@ -17,9 +18,6 @@ export class ProjectDto {
 	@ApiPropertyOptional({ example: 'Project Thumbnail' })
 	thumbnail?: string;
 
-	@ApiProperty({ example: true })
-	isActive: boolean;
-
 	@ApiProperty({ example: new Date() })
 	createdAt: Date;
 
@@ -28,4 +26,9 @@ export class ProjectDto {
 
 	@ApiPropertyOptional({ example: null })
 	deletedAt?: Date;
+}
+
+export class ProjectWithMediaDto extends ProjectDto {
+	@ApiPropertyOptional({ type: () => [MediaDto] })
+	medias?: MediaDto[];
 }

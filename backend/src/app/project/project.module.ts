@@ -1,3 +1,4 @@
+import { MediaModule } from '@/app/media/media.module';
 import { ProjectController } from '@/app/project/project.controller';
 import { ProjectEntity } from '@/app/project/project.entity';
 import { ProjectRepository } from '@/app/project/project.repository';
@@ -6,7 +7,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-	imports: [TypeOrmModule.forFeature([ProjectEntity])],
+	imports: [TypeOrmModule.forFeature([ProjectEntity]), MediaModule],
 	providers: [ProjectService, ProjectRepository],
 	controllers: [ProjectController],
 })

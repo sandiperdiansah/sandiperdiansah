@@ -1,7 +1,17 @@
-import { ProjectDto } from '@/app/project/dto';
+import { CreateMediaDtoRequest } from '@/app/media/dto';
+import { MediaType } from '@/app/media/media.entity';
+import { ProjectWithMediaDto } from '@/app/project/dto';
 import { HttpStatus } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+	IsArray,
+	IsBoolean,
+	IsNotEmpty,
+	IsOptional,
+	IsString,
+	ValidateNested,
+} from 'class-validator';
 
 export class CreateProjectDtoRequest {
 	@ApiProperty({ example: 'Project Name' })
@@ -28,6 +38,19 @@ export class CreateProjectDtoRequest {
 	@IsOptional()
 	@IsBoolean()
 	isActive?: boolean;
+
+	@ApiPropertyOptional({
+		type: [CreateMediaDtoRequest],
+		example: [
+			{ type: MediaType.IMAGE, url: 'https://example.com/image.jpg' },
+			{ type: MediaType.VIDEO, url: 'https://example.com/video.mp4' },
+		],
+	})
+	@IsOptional()
+	@IsArray()
+	@ValidateNested({ each: true })
+	@Type(() => CreateMediaDtoRequest)
+	medias?: CreateMediaDtoRequest[];
 }
 
 export class CreateProjectDtoResponse {
@@ -37,6 +60,8 @@ export class CreateProjectDtoResponse {
 	@ApiProperty({ example: 'Create project successful' })
 	message: string;
 
-	@ApiProperty({ type: () => ProjectDto })
-	data: ProjectDto;
+	@ApiProperty({
+		type: () => ProjectWithMediaDto,
+	})
+	data: ProjectWithMediaDto;
 }

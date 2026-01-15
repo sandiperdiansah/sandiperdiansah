@@ -1,18 +1,16 @@
+import { MediaType } from '@/app/media/media.entity';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { v4 as uuid } from 'uuid';
 
-export class CategoryDto {
+export class MediaDto {
 	@ApiProperty({ example: uuid() })
 	id: string;
 
-	@ApiProperty({ example: 'Category Name' })
-	name: string;
+	@ApiProperty({ example: 'https://placehold.co/600*400.webp' })
+	url: string;
 
-	@ApiProperty({ example: 'category-slug' })
-	slug: string;
-
-	@ApiProperty({ example: 'Category Description' })
-	description?: string;
+	@ApiProperty({ example: MediaType.IMAGE })
+	type: MediaType;
 
 	@ApiProperty({ example: new Date() })
 	createdAt: Date;

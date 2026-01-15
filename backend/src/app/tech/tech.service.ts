@@ -6,12 +6,7 @@ import {
 } from '@/app/tech/dto';
 import { TechEntity } from '@/app/tech/tech.entity';
 import { TechRepository } from '@/app/tech/tech.repository';
-import {
-	DefaultWhereOrder,
-	DefaultWhereSort,
-	DefaultWhereStatus,
-	createUniqueSlugHelper,
-} from '@/default';
+import { DefaultWhereOrder, DefaultWhereSort, createUniqueSlugHelper } from '@/default';
 import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { FindOptionsWhere, Like } from 'typeorm';
 
@@ -44,18 +39,11 @@ export class TechService {
 				sort = DefaultWhereSort.CREATED_AT,
 				order = DefaultWhereOrder.DESC,
 				search,
-				filterStatus,
 			} = query;
 
 			const where: FindOptionsWhere<TechEntity>[] = search
 				? [{ name: Like(`%${search}%`) }, { slug: Like(`%${search}%`) }]
 				: [{}];
-
-			if (filterStatus && filterStatus !== DefaultWhereStatus.ALL) {
-				where.forEach((tech) => {
-					tech.isActive = filterStatus === DefaultWhereStatus.ACTIVE;
-				});
-			}
 
 			const [data, count] = await this.techRepository.findAndCount({
 				where,

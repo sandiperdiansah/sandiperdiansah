@@ -14,9 +14,6 @@ export class TechDto {
 	@ApiProperty({ example: 'Tech Description' })
 	description?: string;
 
-	@ApiProperty({ example: true })
-	isActive: boolean;
-
 	@ApiProperty({ example: new Date() })
 	createdAt: Date;
 

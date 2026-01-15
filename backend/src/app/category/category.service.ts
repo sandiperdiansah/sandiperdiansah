@@ -6,12 +6,7 @@ import {
 	PaginationCategoryDtoResponse,
 	UpdateCategoryDtoRequest,
 } from '@/app/category/dto';
-import {
-	DefaultWhereOrder,
-	DefaultWhereSort,
-	DefaultWhereStatus,
-	createUniqueSlugHelper,
-} from '@/default';
+import { DefaultWhereOrder, DefaultWhereSort, createUniqueSlugHelper } from '@/default';
 import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { FindOptionsWhere, Like } from 'typeorm';
 
@@ -46,18 +41,11 @@ export class CategoryService {
 				sort = DefaultWhereSort.CREATED_AT,
 				order = DefaultWhereOrder.DESC,
 				search,
-				filterStatus,
 			} = query;
 
 			const where: FindOptionsWhere<CategoryEntity>[] = search
 				? [{ name: Like(`%${search}%`) }, { slug: Like(`%${search}%`) }]
 				: [{}];
-
-			if (filterStatus && filterStatus !== DefaultWhereStatus.ALL) {
-				where.forEach((category) => {
-					category.isActive = filterStatus === DefaultWhereStatus.ACTIVE;
-				});
-			}
 
 			const [data, count] = await this.categoryRepository.findAndCount({
 				where,
