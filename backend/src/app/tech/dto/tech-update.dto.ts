@@ -1,34 +1,26 @@
-import { TechDto } from '@/app/tech/dto';
-import { HttpStatus } from '@nestjs/common';
+import { TechDto } from '@/app/tech/dto/tech.dto';
+import { faker } from '@faker-js/faker';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class UpdateTechDtoRequest {
-	@ApiPropertyOptional({ example: 'Tech Name' })
+	@ApiPropertyOptional({ example: faker.lorem.word() })
 	@IsOptional()
 	@IsString()
 	name?: string;
 
-	@ApiPropertyOptional({ example: 'tech-slug' })
+	@ApiPropertyOptional({ example: faker.lorem.slug() })
 	@IsOptional()
 	@IsString()
 	slug?: string;
 
-	@ApiPropertyOptional({ example: 'Tech Description' })
+	@ApiPropertyOptional({ example: faker.lorem.sentence() })
 	@IsOptional()
 	@IsString()
 	description?: string;
-
-	@ApiPropertyOptional({ example: true })
-	@IsOptional()
-	@IsBoolean()
-	isActive?: boolean;
 }
 
 export class UpdateTechDtoResponse {
-	@ApiProperty({ example: HttpStatus.OK })
-	statusCode: number;
-
 	@ApiProperty({ example: 'Update tech successful' })
 	message: string;
 

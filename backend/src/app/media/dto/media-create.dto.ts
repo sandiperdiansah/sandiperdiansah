@@ -1,15 +1,16 @@
-import { MediaType } from '@/app/media/media.entity';
+import { DefaultMediaType } from '@/default';
+import { faker } from '@faker-js/faker';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsUrl } from 'class-validator';
 
 export class CreateMediaDtoRequest {
-	@ApiProperty({ example: 'https://placehold.co/600*400.webp' })
+	@ApiProperty({ example: faker.image.url() })
 	@IsNotEmpty()
 	@IsUrl()
 	url: string;
 
-	@ApiProperty({ example: MediaType.IMAGE })
+	@ApiProperty({ example: DefaultMediaType.IMAGE })
 	@IsNotEmpty()
-	@IsEnum(MediaType)
-	type: MediaType;
+	@IsEnum(DefaultMediaType)
+	type: DefaultMediaType;
 }

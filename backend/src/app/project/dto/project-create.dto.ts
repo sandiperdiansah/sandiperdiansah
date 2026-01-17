@@ -1,7 +1,7 @@
 import { CreateMediaDtoRequest } from '@/app/media/dto';
-import { MediaType } from '@/app/media/media.entity';
 import { ProjectWithMediaDto } from '@/app/project/dto';
-import { HttpStatus } from '@nestjs/common';
+import { DefaultMediaType } from '@/default';
+import { faker } from '@faker-js/faker';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
@@ -10,40 +10,37 @@ import {
 	IsNotEmpty,
 	IsOptional,
 	IsString,
+	IsUrl,
 	ValidateNested,
 } from 'class-validator';
 
 export class CreateProjectDtoRequest {
-	@ApiProperty({ example: 'Project Name' })
+	@ApiProperty({ example: faker.lorem.word() })
 	@IsNotEmpty()
 	@IsString()
 	name: string;
 
-	@ApiProperty({ example: 'project-slug' })
+	@ApiProperty({ example: faker.lorem.slug() })
 	@IsNotEmpty()
 	@IsString()
 	slug: string;
 
-	@ApiPropertyOptional({ example: 'Project Description' })
+	@ApiPropertyOptional({ example: faker.lorem.sentence() })
 	@IsOptional()
 	@IsString()
 	description?: string;
 
-	@ApiPropertyOptional({ example: 'Project Thumbnail' })
+	@ApiPropertyOptional({ example: faker.image.url() })
 	@IsOptional()
 	@IsString()
-	thumbnail?: string;
-
-	@ApiPropertyOptional({ example: true })
-	@IsOptional()
-	@IsBoolean()
-	isActive?: boolean;
+	@IsUrl()
+	image?: string;
 
 	@ApiPropertyOptional({
 		type: [CreateMediaDtoRequest],
 		example: [
-			{ type: MediaType.IMAGE, url: 'https://example.com/image.jpg' },
-			{ type: MediaType.VIDEO, url: 'https://example.com/video.mp4' },
+			{ type: DefaultMediaType.IMAGE, url: faker.image.url() },
+			{ type: DefaultMediaType.VIDEO, url: faker.image.url() },
 		],
 	})
 	@IsOptional()
@@ -54,14 +51,9 @@ export class CreateProjectDtoRequest {
 }
 
 export class CreateProjectDtoResponse {
-	@ApiProperty({ example: HttpStatus.CREATED })
-	statusCode: number;
-
 	@ApiProperty({ example: 'Create project successful' })
 	message: string;
 
-	@ApiProperty({
-		type: () => ProjectWithMediaDto,
-	})
+	@ApiProperty({ type: () => ProjectWithMediaDto })
 	data: ProjectWithMediaDto;
 }

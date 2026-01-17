@@ -1,4 +1,5 @@
 import { ProjectEntity } from '@/app/project/project.entity';
+import { DefaultMediaType } from '@/default';
 import {
 	BaseEntity,
 	Column,
@@ -10,13 +11,6 @@ import {
 	UpdateDateColumn,
 } from 'typeorm';
 
-export enum MediaType {
-	IMAGE = 'image',
-	AUDIO = 'audio',
-	VIDEO = 'video',
-	FILE = 'file',
-}
-
 @Entity('ms_medias')
 export class MediaEntity extends BaseEntity {
 	@PrimaryGeneratedColumn('uuid')
@@ -25,8 +19,8 @@ export class MediaEntity extends BaseEntity {
 	@Column({ type: 'text', nullable: false })
 	url: string;
 
-	@Column({ type: 'enum', enum: MediaType, nullable: false })
-	type: MediaType;
+	@Column({ type: 'enum', enum: DefaultMediaType, nullable: false })
+	type: DefaultMediaType;
 
 	@CreateDateColumn({ type: 'timestamptz' })
 	createdAt: Date;

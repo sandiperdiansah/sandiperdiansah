@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { v4 as uuid } from 'uuid';
 
@@ -5,13 +6,13 @@ export class CategoryDto {
 	@ApiProperty({ example: uuid() })
 	id: string;
 
-	@ApiProperty({ example: 'Category Name' })
+	@ApiProperty({ example: faker.lorem.word() })
 	name: string;
 
-	@ApiProperty({ example: 'category-slug' })
+	@ApiProperty({ example: faker.lorem.slug() })
 	slug: string;
 
-	@ApiProperty({ example: 'Category Description' })
+	@ApiProperty({ example: faker.lorem.sentence() })
 	description?: string;
 
 	@ApiProperty({ example: new Date() })

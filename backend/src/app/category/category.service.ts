@@ -2,13 +2,14 @@ import { CategoryEntity } from '@/app/category/category.entity';
 import { CategoryRepository } from '@/app/category/category.repository';
 import {
 	CreateCategoryDtoRequest,
-	FindAllCategoryDtoQuery,
+	FindAllCategoryDtoRequest,
+	FindOneCategoryDtoRequest,
 	PaginationCategoryDtoResponse,
 	UpdateCategoryDtoRequest,
 } from '@/app/category/dto';
-import { DefaultWhereOrder, DefaultWhereSort, createUniqueSlugHelper } from '@/default';
+import { DefaultWhereSort, createUniqueSlugHelper } from '@/default';
 import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { FindOptionsWhere, Like } from 'typeorm';
+import { FindOptionsWhere, ILike } from 'typeorm';
 
 @Injectable()
 export class CategoryService {
@@ -17,14 +18,14 @@ export class CategoryService {
 	async create(request: CreateCategoryDtoRequest): Promise<CategoryEntity> {
 		try {
 			const slug = createUniqueSlugHelper(request.slug);
-			await this.conflicCategory(slug);
+			await this.conflicCategory({ slug });
 			const entity = this.categoryRepository.create({
 				...request,
 				slug,
 			});
 
 			Logger.log('CATEGORY_SERVICE#CREATE');
-			return await this.categoryRepository.save(entity);
+			return this.categoryRepository.save(entity);
 		} catch (error) {
 			Logger.error('CATEGORY_SERVICE#CREATE', error);
 			throw error;
@@ -32,24 +33,18 @@ export class CategoryService {
 	}
 
 	async findAll(
-		query: FindAllCategoryDtoQuery,
+		request: FindAllCategoryDtoRequest,
 	): Promise<PaginationCategoryDtoResponse> {
 		try {
-			const {
-				page = 1,
-				limit = 10,
-				sort = DefaultWhereSort.CREATED_AT,
-				order = DefaultWhereOrder.DESC,
-				search,
-			} = query;
+			const { page = 1, limit = 10, sort, order, search } = request;
 
 			const where: FindOptionsWhere<CategoryEntity>[] = search
-				? [{ name: Like(`%${search}%`) }, { slug: Like(`%${search}%`) }]
+				? [{ name: ILike(`%${search}%`) }, { slug: ILike(`%${search}%`) }]
 				: [{}];
 
 			const [data, count] = await this.categoryRepository.findAndCount({
 				where,
-				order: { [sort]: order },
+				order: { [sort as DefaultWhereSort]: order },
 				skip: (page - 1) * limit,
 				take: limit,
 			});
@@ -71,15 +66,16 @@ export class CategoryService {
 		}
 	}
 
-	async findOne(id: string, withDeleted = false): Promise<CategoryEntity> {
+	async findOne(request: FindOneCategoryDtoRequest): Promise<CategoryEntity> {
 		try {
+			const { id, withDeleted } = request;
+
 			const entity = await this.categoryRepository.findOne({
 				where: { id },
 				withDeleted,
 			});
 
 			if (!entity) {
-				Logger.log('CATEGORY_SERVICE#FIND_ONE');
 				throw new NotFoundException('Category not found');
 			}
 
@@ -93,10 +89,10 @@ export class CategoryService {
 
 	async update(id: string, request: UpdateCategoryDtoRequest): Promise<CategoryEntity> {
 		try {
-			const entity = await this.findOne(id);
+			const entity = await this.findOne({ id });
 
 			if (request.slug && request.slug !== entity.slug) {
-				await this.conflicCategory(request.slug);
+				await this.conflicCategory({ slug: request.slug });
 			}
 
 			await this.categoryRepository.update(entity.id, {
@@ -105,7 +101,7 @@ export class CategoryService {
 			});
 
 			Logger.log('CATEGORY_SERVICE#UPDATE');
-			return this.findOne(entity.id);
+			return this.findOne({ id });
 		} catch (error) {
 			Logger.error('CATEGORY_SERVICE#UPDATE', error);
 			throw error;
@@ -114,9 +110,10 @@ export class CategoryService {
 
 	async delete(id: string): Promise<void> {
 		try {
-			await this.findOne(id);
-			await this.categoryRepository.softDelete(id);
+			await this.findOne({ id });
 			Logger.log('CATEGORY_SERVICE#DELETE');
+
+			await this.categoryRepository.softDelete(id);
 		} catch (error) {
 			Logger.error('CATEGORY_SERVICE#DELETE', error);
 			throw error;
@@ -125,9 +122,10 @@ export class CategoryService {
 
 	async restore(id: string): Promise<void> {
 		try {
-			const entity = await this.findOne(id, true);
-			await this.categoryRepository.restore(entity.id);
+			await this.findOne({ id, withDeleted: true });
 			Logger.log('CATEGORY_SERVICE#RESTORE');
+
+			await this.categoryRepository.restore(id);
 		} catch (error) {
 			Logger.error('CATEGORY_SERVICE#RESTORE', error);
 			throw error;
@@ -136,20 +134,24 @@ export class CategoryService {
 
 	async forceDelete(id: string): Promise<void> {
 		try {
-			const entity = await this.findOne(id);
-			await this.categoryRepository.delete(entity.id);
+			const entity = await this.findOne({ id, withDeleted: true });
 			Logger.log('CATEGORY_SERVICE#FORCE_DELETE');
+
+			await this.categoryRepository.delete(entity.id);
 		} catch (error) {
 			Logger.error('CATEGORY_SERVICE#FORCE_DELETE', error);
 			throw error;
 		}
 	}
 
-	private async conflicCategory(slug: string): Promise<void> {
-		const entity = await this.categoryRepository.findOneBy({ slug });
+	private async conflicCategory(request: FindOneCategoryDtoRequest): Promise<void> {
+		const entity = await this.categoryRepository.findOne({
+			where: {
+				slug: request.slug,
+			},
+		});
 
 		if (entity) {
-			Logger.log('CATEGORY_SERVICE#CONFLICT', entity);
 			throw new ConflictException('Category already exists');
 		}
 	}

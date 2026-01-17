@@ -4,7 +4,6 @@ export enum DefaultWhereOrder {
 }
 
 export enum DefaultWhereStatus {
-	ALL = 'all',
 	ACTIVE = 'active',
 	INACTIVE = 'inactive',
 }
@@ -15,4 +14,17 @@ export enum DefaultWhereSort {
 	CREATED_AT = 'createdAt',
 	UPDATED_AT = 'updatedAt',
 	DELETED_AT = 'deletedAt',
+}
+
+export enum DefaultMediaType {
+	IMAGE = 'image',
+	AUDIO = 'audio',
+	VIDEO = 'video',
+	FILE = 'file',
+}
+
+export enum DefaultUserRole {
+	USER = 'user',
+	ADMIN = 'admin',
+	SUPER_ADMIN = 'superAdmin',
 }

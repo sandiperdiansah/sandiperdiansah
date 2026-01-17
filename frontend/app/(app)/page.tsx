@@ -1,7 +1,9 @@
 const Page = () => {
     return (
         <>
-            <section>ok</section>
+            <section>
+                <h1>Hello World</h1>
+            </section>
         </>
     );
 };

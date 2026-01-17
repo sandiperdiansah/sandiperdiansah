@@ -3,10 +3,11 @@ import {
 	CreateProjectDtoRequest,
 	CreateProjectDtoResponse,
 	DeleteProjectDtoResponse,
-	FindAllProjectDtoQuery,
+	FindAllProjectDtoRequest,
 	FindAllProjectDtoResponse,
 	FindOneProjectDtoResponse,
 	NotFoundProjectDtoResponse,
+	RestoreProjectDtoResponse,
 	UpdateProjectDtoRequest,
 	UpdateProjectDtoResponse,
 } from '@/app/project/dto';
@@ -40,14 +41,13 @@ export class ProjectController {
 	@ApiOperation({ summary: 'Create project' })
 	@ApiCreatedResponse({ type: CreateProjectDtoResponse })
 	@ApiConflictResponse({ type: ConflictProjectDtoResponse })
-	@Post()
 	@HttpCode(HttpStatus.CREATED)
+	@Post()
 	async create(
 		@Body() body: CreateProjectDtoRequest,
 	): Promise<CreateProjectDtoResponse> {
 		const response = await this.projectService.create(body);
 		return {
-			statusCode: HttpStatus.CREATED,
 			message: 'Create project successful',
 			data: response,
 		};
@@ -55,14 +55,13 @@ export class ProjectController {
 
 	@ApiOperation({ summary: 'Find all project' })
 	@ApiOkResponse({ type: FindAllProjectDtoResponse })
-	@Get()
 	@HttpCode(HttpStatus.OK)
+	@Get()
 	async findAll(
-		@Query() query: FindAllProjectDtoQuery,
+		@Query() query: FindAllProjectDtoRequest,
 	): Promise<FindAllProjectDtoResponse> {
 		const response = await this.projectService.findAll(query);
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Find all project successful',
 			data: response,
 		};
@@ -71,12 +70,11 @@ export class ProjectController {
 	@ApiOperation({ summary: 'Find one project' })
 	@ApiOkResponse({ type: FindOneProjectDtoResponse })
 	@ApiNotFoundResponse({ type: NotFoundProjectDtoResponse })
-	@Get(':id')
 	@HttpCode(HttpStatus.OK)
+	@Get(':id')
 	async findOne(@Param('id') id: string): Promise<FindOneProjectDtoResponse> {
-		const response = await this.projectService.findOne(id);
+		const response = await this.projectService.findOne({ id });
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Find one project successful',
 			data: response,
 		};
@@ -86,15 +84,14 @@ export class ProjectController {
 	@ApiOkResponse({ type: UpdateProjectDtoResponse })
 	@ApiNotFoundResponse({ type: NotFoundProjectDtoResponse })
 	@ApiConflictResponse({ type: ConflictProjectDtoResponse })
-	@Patch(':id')
 	@HttpCode(HttpStatus.OK)
+	@Patch(':id')
 	async update(
 		@Param('id') id: string,
 		@Body() body: UpdateProjectDtoRequest,
 	): Promise<UpdateProjectDtoResponse> {
 		const response = await this.projectService.update(id, body);
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Update project successful',
 			data: response,
 		};
@@ -103,25 +100,23 @@ export class ProjectController {
 	@ApiOperation({ summary: 'Delete project (soft delete)' })
 	@ApiOkResponse({ type: DeleteProjectDtoResponse })
 	@ApiNotFoundResponse({ type: NotFoundProjectDtoResponse })
-	@Delete(':id')
 	@HttpCode(HttpStatus.OK)
+	@Delete(':id')
 	async delete(@Param('id') id: string): Promise<DeleteProjectDtoResponse> {
 		await this.projectService.delete(id);
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Delete project successful',
 		};
 	}
 
 	@ApiOperation({ summary: 'Restore project' })
-	@ApiOkResponse({ type: DeleteProjectDtoResponse })
+	@ApiOkResponse({ type: RestoreProjectDtoResponse })
 	@ApiNotFoundResponse({ type: NotFoundProjectDtoResponse })
-	@Patch(':id/restore')
 	@HttpCode(HttpStatus.OK)
-	async restore(@Param('id') id: string): Promise<DeleteProjectDtoResponse> {
+	@Patch(':id/restore')
+	async restore(@Param('id') id: string): Promise<RestoreProjectDtoResponse> {
 		await this.projectService.restore(id);
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Restore project successful',
 		};
 	}
@@ -129,12 +124,11 @@ export class ProjectController {
 	@ApiOperation({ summary: 'Delete project (force delete)' })
 	@ApiOkResponse({ type: DeleteProjectDtoResponse })
 	@ApiNotFoundResponse({ type: NotFoundProjectDtoResponse })
-	@Delete(':id/force')
 	@HttpCode(HttpStatus.OK)
+	@Delete(':id/force')
 	async forceDelete(@Param('id') id: string): Promise<DeleteProjectDtoResponse> {
 		await this.projectService.forceDelete(id);
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Delete project successful',
 		};
 	}

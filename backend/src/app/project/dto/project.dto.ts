@@ -1,4 +1,5 @@
 import { MediaDto } from '@/app/media/dto';
+import { faker } from '@faker-js/faker';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { v4 as uuid } from 'uuid';
 
@@ -6,17 +7,17 @@ export class ProjectDto {
 	@ApiProperty({ example: uuid() })
 	id: string;
 
-	@ApiProperty({ example: 'Project Name' })
+	@ApiProperty({ example: faker.lorem.word() })
 	name: string;
 
-	@ApiProperty({ example: 'project-slug' })
+	@ApiProperty({ example: faker.lorem.slug() })
 	slug: string;
 
-	@ApiPropertyOptional({ example: 'Project Description' })
+	@ApiPropertyOptional({ example: faker.lorem.sentence() })
 	description?: string;
 
-	@ApiPropertyOptional({ example: 'Project Thumbnail' })
-	thumbnail?: string;
+	@ApiPropertyOptional({ example: faker.image.url() })
+	image?: string;
 
 	@ApiProperty({ example: new Date() })
 	createdAt: Date;

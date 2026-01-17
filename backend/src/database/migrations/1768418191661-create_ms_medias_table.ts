@@ -1,4 +1,4 @@
-import { MediaType } from '@/app/media/media.entity';
+import { DefaultMediaType } from '@/default';
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
 export class CreateMsMediasTable1768418191661 implements MigrationInterface {
@@ -22,12 +22,7 @@ export class CreateMsMediasTable1768418191661 implements MigrationInterface {
 					{
 						name: 'type',
 						type: 'enum',
-						enum: [
-							MediaType.IMAGE,
-							MediaType.VIDEO,
-							MediaType.FILE,
-							MediaType.AUDIO,
-						],
+						enum: Object.values(DefaultMediaType),
 						isNullable: false,
 					},
 					{

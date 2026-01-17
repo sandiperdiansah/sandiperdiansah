@@ -1,34 +1,26 @@
 import { CategoryDto } from '@/app/category/dto';
-import { HttpStatus } from '@nestjs/common';
+import { faker } from '@faker-js/faker';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class UpdateCategoryDtoRequest {
-	@ApiPropertyOptional({ example: 'Category Name' })
+	@ApiPropertyOptional({ example: faker.lorem.word() })
 	@IsOptional()
 	@IsString()
 	name?: string;
 
-	@ApiPropertyOptional({ example: 'category-slug' })
+	@ApiPropertyOptional({ example: faker.lorem.slug() })
 	@IsOptional()
 	@IsString()
 	slug?: string;
 
-	@ApiPropertyOptional({ example: 'Category Description' })
+	@ApiPropertyOptional({ example: faker.lorem.sentence() })
 	@IsOptional()
 	@IsString()
 	description?: string;
-
-	@ApiPropertyOptional({ example: true })
-	@IsOptional()
-	@IsBoolean()
-	isActive?: boolean;
 }
 
 export class UpdateCategoryDtoResponse {
-	@ApiProperty({ example: HttpStatus.OK })
-	statusCode: number;
-
 	@ApiProperty({ example: 'Update category successful' })
 	message: string;
 

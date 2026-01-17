@@ -1,23 +1,25 @@
 import { CategoryDto } from '@/app/category/dto';
-import { HttpStatus } from '@nestjs/common';
-import { ApiProperty } from '@nestjs/swagger';
-import { DefaultFindAllDtoQuery, DefaultMetaDtoResponse } from 'src/default';
+import { faker } from '@faker-js/faker';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
+import {
+	DefaultFindAllDtoRequest,
+	DefaultFindOneDtoRequest,
+	DefaultMetaDtoResponse,
+} from 'src/default';
 
 // find all
-export class FindAllCategoryDtoQuery extends DefaultFindAllDtoQuery {}
+export class FindAllCategoryDtoRequest extends DefaultFindAllDtoRequest {}
 
 export class PaginationCategoryDtoResponse {
 	@ApiProperty({ type: () => DefaultMetaDtoResponse })
 	meta: DefaultMetaDtoResponse;
 
-	@ApiProperty({ type: () => CategoryDto, isArray: true })
+	@ApiProperty({ type: () => [CategoryDto] })
 	data: CategoryDto[];
 }
 
 export class FindAllCategoryDtoResponse {
-	@ApiProperty({ example: HttpStatus.OK })
-	statusCode: number;
-
 	@ApiProperty({ example: 'Find all category successful' })
 	message: string;
 
@@ -26,10 +28,14 @@ export class FindAllCategoryDtoResponse {
 }
 
 // find one
-export class FindOneCategoryDtoResponse {
-	@ApiProperty({ example: HttpStatus.OK })
-	statusCode: number;
+export class FindOneCategoryDtoRequest extends DefaultFindOneDtoRequest {
+	@ApiPropertyOptional({ example: faker.lorem.slug() })
+	@IsOptional()
+	@IsString()
+	slug?: string;
+}
 
+export class FindOneCategoryDtoResponse {
 	@ApiProperty({ example: 'Find one category successful' })
 	message: string;
 
@@ -39,9 +45,6 @@ export class FindOneCategoryDtoResponse {
 
 // not found
 export class NotFoundCategoryDtoResponse {
-	@ApiProperty({ example: HttpStatus.NOT_FOUND })
-	statusCode: number;
-
 	@ApiProperty({ example: 'Category not found' })
 	message: string;
 
@@ -51,9 +54,6 @@ export class NotFoundCategoryDtoResponse {
 
 // confilct
 export class ConflictCategoryDtoResponse {
-	@ApiProperty({ example: HttpStatus.CONFLICT })
-	statusCode: number;
-
 	@ApiProperty({ example: 'Category already exists' })
 	message: string;
 

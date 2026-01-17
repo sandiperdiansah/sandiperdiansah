@@ -1,48 +1,38 @@
 import { CreateMediaDtoRequest } from '@/app/media/dto/media-create.dto';
-import { MediaType } from '@/app/media/media.entity';
 import { ProjectDto } from '@/app/project/dto';
-import { HttpStatus } from '@nestjs/common';
+import { DefaultMediaType } from '@/default';
+import { faker } from '@faker-js/faker';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import {
-	IsArray,
-	IsBoolean,
-	IsOptional,
-	IsString,
-	ValidateNested,
-} from 'class-validator';
+import { IsArray, IsOptional, IsString, IsUrl, ValidateNested } from 'class-validator';
 
 export class UpdateProjectDtoRequest {
-	@ApiPropertyOptional({ example: 'Project Name' })
+	@ApiPropertyOptional({ example: faker.lorem.word() })
 	@IsOptional()
 	@IsString()
 	name?: string;
 
-	@ApiPropertyOptional({ example: 'project-slug' })
+	@ApiPropertyOptional({ example: faker.lorem.slug() })
 	@IsOptional()
 	@IsString()
 	slug?: string;
 
-	@ApiPropertyOptional({ example: 'Project Description' })
+	@ApiPropertyOptional({ example: faker.lorem.sentence() })
 	@IsOptional()
 	@IsString()
 	description?: string;
 
-	@ApiPropertyOptional({ example: 'Project Thumbnail' })
+	@ApiPropertyOptional({ example: faker.image.url() })
 	@IsOptional()
 	@IsString()
-	thumbnail?: string;
-
-	@ApiPropertyOptional({ example: true })
-	@IsOptional()
-	@IsBoolean()
-	isActive?: boolean;
+	@IsUrl()
+	image?: string;
 
 	@ApiPropertyOptional({
 		type: [CreateMediaDtoRequest],
 		example: [
-			{ type: MediaType.IMAGE, url: 'https://example.com/image.jpg' },
-			{ type: MediaType.VIDEO, url: 'https://example.com/video.mp4' },
+			{ type: DefaultMediaType.IMAGE, url: faker.image.url() },
+			{ type: DefaultMediaType.VIDEO, url: faker.image.url() },
 		],
 	})
 	@IsOptional()
@@ -53,9 +43,6 @@ export class UpdateProjectDtoRequest {
 }
 
 export class UpdateProjectDtoResponse {
-	@ApiProperty({ example: HttpStatus.OK })
-	statusCode: number;
-
 	@ApiProperty({ example: 'Update project successful' })
 	message: string;
 

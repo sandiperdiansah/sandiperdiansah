@@ -1,23 +1,25 @@
-import { ProjectDto } from '@/app/project/dto';
-import { HttpStatus } from '@nestjs/common';
-import { ApiProperty } from '@nestjs/swagger';
-import { DefaultFindAllDtoQuery, DefaultMetaDtoResponse } from 'src/default';
+import { ProjectDto } from '@/app/project/dto/project.dto';
+import { faker } from '@faker-js/faker';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
+import {
+	DefaultFindAllDtoRequest,
+	DefaultFindOneDtoRequest,
+	DefaultMetaDtoResponse,
+} from 'src/default';
 
 // find all
-export class FindAllProjectDtoQuery extends DefaultFindAllDtoQuery {}
+export class FindAllProjectDtoRequest extends DefaultFindAllDtoRequest {}
 
 export class PaginationProjectDtoResponse {
 	@ApiProperty({ type: () => DefaultMetaDtoResponse })
 	meta: DefaultMetaDtoResponse;
 
-	@ApiProperty({ type: () => ProjectDto, isArray: true })
+	@ApiProperty({ type: () => [ProjectDto] })
 	data: ProjectDto[];
 }
 
 export class FindAllProjectDtoResponse {
-	@ApiProperty({ example: HttpStatus.OK })
-	statusCode: number;
-
 	@ApiProperty({ example: 'Find all project successful' })
 	message: string;
 
@@ -26,10 +28,14 @@ export class FindAllProjectDtoResponse {
 }
 
 // find one
-export class FindOneProjectDtoResponse {
-	@ApiProperty({ example: HttpStatus.OK })
-	statusCode: number;
+export class FindOneProjectDtoRequest extends DefaultFindOneDtoRequest {
+	@ApiPropertyOptional({ example: faker.lorem.slug() })
+	@IsOptional()
+	@IsString()
+	slug?: string;
+}
 
+export class FindOneProjectDtoResponse {
 	@ApiProperty({ example: 'Find one project successful' })
 	message: string;
 
@@ -39,9 +45,6 @@ export class FindOneProjectDtoResponse {
 
 // not found
 export class NotFoundProjectDtoResponse {
-	@ApiProperty({ example: HttpStatus.NOT_FOUND })
-	statusCode: number;
-
 	@ApiProperty({ example: 'Project not found' })
 	message: string;
 
@@ -51,9 +54,6 @@ export class NotFoundProjectDtoResponse {
 
 // confilct
 export class ConflictProjectDtoResponse {
-	@ApiProperty({ example: HttpStatus.CONFLICT })
-	statusCode: number;
-
 	@ApiProperty({ example: 'Project already exists' })
 	message: string;
 

@@ -24,8 +24,8 @@ export class ProjectEntity extends BaseEntity {
 	@Column({ type: 'text', nullable: true })
 	description?: string;
 
-	@Column({ type: 'varchar', nullable: true })
-	thumbnail?: string;
+	@Column({ type: 'text', nullable: true })
+	image?: string;
 
 	@CreateDateColumn({ type: 'timestamptz' })
 	createdAt: Date;

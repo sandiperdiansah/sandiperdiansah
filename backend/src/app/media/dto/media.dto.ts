@@ -1,4 +1,5 @@
-import { MediaType } from '@/app/media/media.entity';
+import { DefaultMediaType } from '@/default';
+import { faker } from '@faker-js/faker';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { v4 as uuid } from 'uuid';
 
@@ -6,11 +7,11 @@ export class MediaDto {
 	@ApiProperty({ example: uuid() })
 	id: string;
 
-	@ApiProperty({ example: 'https://placehold.co/600*400.webp' })
+	@ApiProperty({ example: faker.image.url() })
 	url: string;
 
-	@ApiProperty({ example: MediaType.IMAGE })
-	type: MediaType;
+	@ApiProperty({ example: DefaultMediaType.IMAGE })
+	type: DefaultMediaType;
 
 	@ApiProperty({ example: new Date() })
 	createdAt: Date;

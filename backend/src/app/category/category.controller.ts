@@ -4,10 +4,11 @@ import {
 	CreateCategoryDtoRequest,
 	CreateCategoryDtoResponse,
 	DeleteCategoryDtoResponse,
-	FindAllCategoryDtoQuery,
+	FindAllCategoryDtoRequest,
 	FindAllCategoryDtoResponse,
 	FindOneCategoryDtoResponse,
 	NotFoundCategoryDtoResponse,
+	RestoreCategoryDtoResponse,
 	UpdateCategoryDtoRequest,
 	UpdateCategoryDtoResponse,
 } from '@/app/category/dto';
@@ -40,14 +41,13 @@ export class CategoryController {
 	@ApiOperation({ summary: 'Create category' })
 	@ApiCreatedResponse({ type: CreateCategoryDtoResponse })
 	@ApiConflictResponse({ type: ConflictCategoryDtoResponse })
-	@Post()
 	@HttpCode(HttpStatus.CREATED)
+	@Post()
 	async create(
 		@Body() body: CreateCategoryDtoRequest,
 	): Promise<CreateCategoryDtoResponse> {
 		const response = await this.categoryService.create(body);
 		return {
-			statusCode: HttpStatus.CREATED,
 			message: 'Create category successful',
 			data: response,
 		};
@@ -55,14 +55,13 @@ export class CategoryController {
 
 	@ApiOperation({ summary: 'Find all category' })
 	@ApiOkResponse({ type: FindAllCategoryDtoResponse })
-	@Get()
 	@HttpCode(HttpStatus.OK)
+	@Get()
 	async findAll(
-		@Query() query: FindAllCategoryDtoQuery,
+		@Query() query: FindAllCategoryDtoRequest,
 	): Promise<FindAllCategoryDtoResponse> {
 		const response = await this.categoryService.findAll(query);
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Find all category successful',
 			data: response,
 		};
@@ -71,12 +70,11 @@ export class CategoryController {
 	@ApiOperation({ summary: 'Find one category' })
 	@ApiOkResponse({ type: FindOneCategoryDtoResponse })
 	@ApiNotFoundResponse({ type: NotFoundCategoryDtoResponse })
-	@Get(':id')
 	@HttpCode(HttpStatus.OK)
+	@Get(':id')
 	async findOne(@Param('id') id: string): Promise<FindOneCategoryDtoResponse> {
-		const response = await this.categoryService.findOne(id);
+		const response = await this.categoryService.findOne({ id });
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Find one category successful',
 			data: response,
 		};
@@ -86,15 +84,14 @@ export class CategoryController {
 	@ApiOkResponse({ type: UpdateCategoryDtoResponse })
 	@ApiNotFoundResponse({ type: NotFoundCategoryDtoResponse })
 	@ApiConflictResponse({ type: ConflictCategoryDtoResponse })
-	@Patch(':id')
 	@HttpCode(HttpStatus.OK)
+	@Patch(':id')
 	async update(
 		@Param('id') id: string,
 		@Body() body: UpdateCategoryDtoRequest,
 	): Promise<UpdateCategoryDtoResponse> {
 		const response = await this.categoryService.update(id, body);
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Update category successful',
 			data: response,
 		};
@@ -103,25 +100,23 @@ export class CategoryController {
 	@ApiOperation({ summary: 'Delete category (soft delete)' })
 	@ApiOkResponse({ type: DeleteCategoryDtoResponse })
 	@ApiNotFoundResponse({ type: NotFoundCategoryDtoResponse })
-	@Delete(':id')
 	@HttpCode(HttpStatus.OK)
+	@Delete(':id')
 	async delete(@Param('id') id: string): Promise<DeleteCategoryDtoResponse> {
 		await this.categoryService.delete(id);
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Delete category successful',
 		};
 	}
 
 	@ApiOperation({ summary: 'Restore category' })
-	@ApiOkResponse({ type: DeleteCategoryDtoResponse })
+	@ApiOkResponse({ type: RestoreCategoryDtoResponse })
 	@ApiNotFoundResponse({ type: NotFoundCategoryDtoResponse })
-	@Patch(':id/restore')
 	@HttpCode(HttpStatus.OK)
-	async restore(@Param('id') id: string): Promise<DeleteCategoryDtoResponse> {
+	@Patch(':id/restore')
+	async restore(@Param('id') id: string): Promise<RestoreCategoryDtoResponse> {
 		await this.categoryService.restore(id);
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Restore category successful',
 		};
 	}
@@ -129,12 +124,11 @@ export class CategoryController {
 	@ApiOperation({ summary: 'Delete category (force delete)' })
 	@ApiOkResponse({ type: DeleteCategoryDtoResponse })
 	@ApiNotFoundResponse({ type: NotFoundCategoryDtoResponse })
-	@Delete(':id/force')
 	@HttpCode(HttpStatus.OK)
+	@Delete(':id/force')
 	async forceDelete(@Param('id') id: string): Promise<DeleteCategoryDtoResponse> {
 		await this.categoryService.forceDelete(id);
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Delete category successful',
 		};
 	}

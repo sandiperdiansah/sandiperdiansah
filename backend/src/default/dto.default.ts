@@ -1,73 +1,75 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
+	IsBoolean,
 	IsEnum,
 	IsInt,
 	IsOptional,
 	IsString,
+	IsUUID,
 	Max,
 	MaxLength,
 	Min,
 } from 'class-validator';
-import { DefaultWhereOrder, DefaultWhereSort, DefaultWhereStatus } from './enum.default';
+import { v4 as uuid } from 'uuid';
+import { DefaultWhereOrder, DefaultWhereSort } from './enum.default';
 
-export abstract class DefaultFindAllDtoQuery {
-	@ApiPropertyOptional({ example: 1, description: 'page', default: 1 })
+export abstract class DefaultFindAllDtoRequest {
+	@ApiPropertyOptional()
 	@IsOptional()
 	@Type(() => Number)
-	@IsInt()
 	@Min(1)
-	page?: number = 1;
+	@IsInt()
+	page?: number;
 
-	@ApiPropertyOptional({ example: 10, description: 'limit', default: 10 })
+	@ApiPropertyOptional()
 	@IsOptional()
 	@Type(() => Number)
-	@IsInt()
-	@Min(1)
+	@Min(5)
 	@Max(100)
-	limit?: number = 10;
+	@IsInt()
+	limit?: number;
 
-	@ApiPropertyOptional({
-		enum: DefaultWhereOrder,
-		example: DefaultWhereOrder.DESC,
-	})
+	@ApiPropertyOptional({ enum: DefaultWhereOrder })
 	@IsOptional()
 	@IsEnum(DefaultWhereOrder)
-	order?: DefaultWhereOrder = DefaultWhereOrder.DESC;
+	order?: DefaultWhereOrder;
 
-	@ApiPropertyOptional({
-		enum: DefaultWhereSort,
-		example: DefaultWhereSort.CREATED_AT,
-	})
+	@ApiPropertyOptional({ enum: DefaultWhereSort })
 	@IsOptional()
 	@IsEnum(DefaultWhereSort)
-	sort?: DefaultWhereSort = DefaultWhereSort.CREATED_AT;
+	sort?: DefaultWhereSort;
 
-	@ApiPropertyOptional({ example: '', description: 'search' })
+	@ApiPropertyOptional()
 	@IsOptional()
-	@IsString()
 	@MaxLength(100)
+	@IsString()
 	search?: string;
-
-	@ApiPropertyOptional({
-		enum: DefaultWhereStatus,
-		example: DefaultWhereStatus.ALL,
-	})
-	@IsOptional()
-	@IsEnum(DefaultWhereStatus)
-	filterStatus?: DefaultWhereStatus = DefaultWhereStatus.ALL;
 }
 
 export class DefaultMetaDtoResponse {
-	@ApiProperty({ example: 1, description: 'page' })
+	@ApiProperty({ example: 1 })
 	page: number;
 
-	@ApiProperty({ example: 10, description: 'limit' })
+	@ApiProperty({ example: 10 })
 	limit: number;
 
-	@ApiProperty({ example: 100, description: 'count' })
+	@ApiProperty({ example: 100 })
 	count: number;
 
-	@ApiProperty({ example: 10, description: 'pages' })
+	@ApiProperty({ example: 10 })
 	pages: number;
+}
+
+export class DefaultFindOneDtoRequest {
+	@ApiPropertyOptional({ example: uuid() })
+	@IsOptional()
+	@IsString()
+	@IsUUID()
+	id?: string;
+
+	@ApiPropertyOptional({ example: false })
+	@IsOptional()
+	@IsBoolean()
+	withDeleted?: boolean = false;
 }

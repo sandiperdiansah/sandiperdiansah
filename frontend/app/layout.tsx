@@ -1,50 +1,35 @@
-import { Toaster } from '@/components/ui/sonner';
-import { TanstackProvider } from '@/providers/TanstackProvider';
-import { ThemeProvider } from '@/providers/ThemeProvider';
+import { theme } from '@/theme/theme';
+import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core';
+import '@mantine/core/styles.css';
 import { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import './globals.css';
 
-const geistMono = Geist_Mono({
-    variable: '--font-geist-mono',
-    weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+const geistSans = Geist({
+    variable: '--font-geist-sans',
     subsets: ['latin'],
 });
 
-const geist = Geist({
-    variable: '--font-geist',
-    weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+const geistMono = Geist_Mono({
+    variable: '--font-geist-mono',
     subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-    title: 'Portfolio',
-    description: 'My personal portfolio',
+    title: 'My Mantine app',
+    description: 'I have followed setup instructions carefully',
 };
 
-const Layout = ({
-    children,
-}: Readonly<{
-    children: React.ReactNode;
-}>) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
         <html
             lang="en"
-            suppressHydrationWarning
+            {...mantineHtmlProps}
         >
-            <body className={`${geistMono.variable} ${geist.variable} antialiased`}>
-                <ThemeProvider>
-                    <TanstackProvider>
-                        <div className="min-h-screen bg-white transition-colors dark:bg-gray-900">
-                            {children}
-                            <Toaster
-                                position="top-right"
-                                duration={3000}
-                                theme="system"
-                            />
-                        </div>
-                    </TanstackProvider>
-                </ThemeProvider>
+            <head>
+                <ColorSchemeScript />
+            </head>
+            <body className={`${geistSans.variable} ${geistMono.variable}`}>
+                <MantineProvider theme={theme}>{children}</MantineProvider>
             </body>
         </html>
     );

@@ -30,8 +30,8 @@ export class CreateMsProjectsTable1768383259800 implements MigrationInterface {
 						isNullable: true,
 					},
 					{
-						name: 'thumbnail',
-						type: 'varchar',
+						name: 'image',
+						type: 'text',
 						isNullable: true,
 					},
 					{

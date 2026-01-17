@@ -1,23 +1,25 @@
-import { TechDto } from '@/app/tech/dto';
-import { HttpStatus } from '@nestjs/common';
-import { ApiProperty } from '@nestjs/swagger';
-import { DefaultFindAllDtoQuery, DefaultMetaDtoResponse } from 'src/default';
+import { TechDto } from '@/app/tech/dto/tech.dto';
+import { faker } from '@faker-js/faker';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
+import {
+	DefaultFindAllDtoRequest,
+	DefaultFindOneDtoRequest,
+	DefaultMetaDtoResponse,
+} from 'src/default';
 
 // find all
-export class FindAllTechDtoQuery extends DefaultFindAllDtoQuery {}
+export class FindAllTechDtoRequest extends DefaultFindAllDtoRequest {}
 
 export class PaginationTechDtoResponse {
 	@ApiProperty({ type: () => DefaultMetaDtoResponse })
 	meta: DefaultMetaDtoResponse;
 
-	@ApiProperty({ type: () => TechDto, isArray: true })
+	@ApiProperty({ type: () => [TechDto] })
 	data: TechDto[];
 }
 
 export class FindAllTechDtoResponse {
-	@ApiProperty({ example: HttpStatus.OK })
-	statusCode: number;
-
 	@ApiProperty({ example: 'Find all tech successful' })
 	message: string;
 
@@ -26,10 +28,14 @@ export class FindAllTechDtoResponse {
 }
 
 // find one
-export class FindOneTechDtoResponse {
-	@ApiProperty({ example: HttpStatus.OK })
-	statusCode: number;
+export class FindOneTechDtoRequest extends DefaultFindOneDtoRequest {
+	@ApiPropertyOptional({ example: faker.lorem.slug() })
+	@IsOptional()
+	@IsString()
+	slug?: string;
+}
 
+export class FindOneTechDtoResponse {
 	@ApiProperty({ example: 'Find one tech successful' })
 	message: string;
 
@@ -39,9 +45,6 @@ export class FindOneTechDtoResponse {
 
 // not found
 export class NotFoundTechDtoResponse {
-	@ApiProperty({ example: HttpStatus.NOT_FOUND })
-	statusCode: number;
-
 	@ApiProperty({ example: 'Tech not found' })
 	message: string;
 
@@ -51,9 +54,6 @@ export class NotFoundTechDtoResponse {
 
 // confilct
 export class ConflictTechDtoResponse {
-	@ApiProperty({ example: HttpStatus.CONFLICT })
-	statusCode: number;
-
 	@ApiProperty({ example: 'Tech already exists' })
 	message: string;
 

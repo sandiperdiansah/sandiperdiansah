@@ -3,10 +3,11 @@ import {
 	CreateTechDtoRequest,
 	CreateTechDtoResponse,
 	DeleteTechDtoResponse,
-	FindAllTechDtoQuery,
+	FindAllTechDtoRequest,
 	FindAllTechDtoResponse,
 	FindOneTechDtoResponse,
 	NotFoundTechDtoResponse,
+	RestoreTechDtoResponse,
 	UpdateTechDtoRequest,
 	UpdateTechDtoResponse,
 } from '@/app/tech/dto';
@@ -40,12 +41,11 @@ export class TechController {
 	@ApiOperation({ summary: 'Create tech' })
 	@ApiCreatedResponse({ type: CreateTechDtoResponse })
 	@ApiConflictResponse({ type: ConflictTechDtoResponse })
-	@Post()
 	@HttpCode(HttpStatus.CREATED)
+	@Post()
 	async create(@Body() body: CreateTechDtoRequest): Promise<CreateTechDtoResponse> {
 		const response = await this.techService.create(body);
 		return {
-			statusCode: HttpStatus.CREATED,
 			message: 'Create tech successful',
 			data: response,
 		};
@@ -53,12 +53,13 @@ export class TechController {
 
 	@ApiOperation({ summary: 'Find all tech' })
 	@ApiOkResponse({ type: FindAllTechDtoResponse })
-	@Get()
 	@HttpCode(HttpStatus.OK)
-	async findAll(@Query() query: FindAllTechDtoQuery): Promise<FindAllTechDtoResponse> {
+	@Get()
+	async findAll(
+		@Query() query: FindAllTechDtoRequest,
+	): Promise<FindAllTechDtoResponse> {
 		const response = await this.techService.findAll(query);
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Find all tech successful',
 			data: response,
 		};
@@ -67,12 +68,11 @@ export class TechController {
 	@ApiOperation({ summary: 'Find one tech' })
 	@ApiOkResponse({ type: FindOneTechDtoResponse })
 	@ApiNotFoundResponse({ type: NotFoundTechDtoResponse })
-	@Get(':id')
 	@HttpCode(HttpStatus.OK)
+	@Get(':id')
 	async findOne(@Param('id') id: string): Promise<FindOneTechDtoResponse> {
-		const response = await this.techService.findOne(id);
+		const response = await this.techService.findOne({ id });
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Find one tech successful',
 			data: response,
 		};
@@ -82,15 +82,14 @@ export class TechController {
 	@ApiOkResponse({ type: UpdateTechDtoResponse })
 	@ApiNotFoundResponse({ type: NotFoundTechDtoResponse })
 	@ApiConflictResponse({ type: ConflictTechDtoResponse })
-	@Patch(':id')
 	@HttpCode(HttpStatus.OK)
+	@Patch(':id')
 	async update(
 		@Param('id') id: string,
 		@Body() body: UpdateTechDtoRequest,
 	): Promise<UpdateTechDtoResponse> {
 		const response = await this.techService.update(id, body);
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Update tech successful',
 			data: response,
 		};
@@ -99,25 +98,23 @@ export class TechController {
 	@ApiOperation({ summary: 'Delete tech (soft delete)' })
 	@ApiOkResponse({ type: DeleteTechDtoResponse })
 	@ApiNotFoundResponse({ type: NotFoundTechDtoResponse })
-	@Delete(':id')
 	@HttpCode(HttpStatus.OK)
+	@Delete(':id')
 	async delete(@Param('id') id: string): Promise<DeleteTechDtoResponse> {
 		await this.techService.delete(id);
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Delete tech successful',
 		};
 	}
 
 	@ApiOperation({ summary: 'Restore tech' })
-	@ApiOkResponse({ type: DeleteTechDtoResponse })
+	@ApiOkResponse({ type: RestoreTechDtoResponse })
 	@ApiNotFoundResponse({ type: NotFoundTechDtoResponse })
-	@Patch(':id/restore')
 	@HttpCode(HttpStatus.OK)
-	async restore(@Param('id') id: string): Promise<DeleteTechDtoResponse> {
+	@Patch(':id/restore')
+	async restore(@Param('id') id: string): Promise<RestoreTechDtoResponse> {
 		await this.techService.restore(id);
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Restore tech successful',
 		};
 	}
@@ -125,12 +122,11 @@ export class TechController {
 	@ApiOperation({ summary: 'Delete tech (force delete)' })
 	@ApiOkResponse({ type: DeleteTechDtoResponse })
 	@ApiNotFoundResponse({ type: NotFoundTechDtoResponse })
-	@Delete(':id/force')
 	@HttpCode(HttpStatus.OK)
+	@Delete(':id/force')
 	async forceDelete(@Param('id') id: string): Promise<DeleteTechDtoResponse> {
 		await this.techService.forceDelete(id);
 		return {
-			statusCode: HttpStatus.OK,
 			message: 'Delete tech successful',
 		};
 	}

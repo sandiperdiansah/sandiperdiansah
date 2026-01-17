@@ -1,14 +1,15 @@
 import {
 	CreateTechDtoRequest,
-	FindAllTechDtoQuery,
+	FindAllTechDtoRequest,
+	FindOneTechDtoRequest,
 	PaginationTechDtoResponse,
 	UpdateTechDtoRequest,
 } from '@/app/tech/dto';
 import { TechEntity } from '@/app/tech/tech.entity';
 import { TechRepository } from '@/app/tech/tech.repository';
-import { DefaultWhereOrder, DefaultWhereSort, createUniqueSlugHelper } from '@/default';
+import { DefaultWhereSort, createUniqueSlugHelper } from '@/default';
 import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { FindOptionsWhere, Like } from 'typeorm';
+import { FindOptionsWhere, ILike } from 'typeorm';
 
 @Injectable()
 export class TechService {
@@ -17,37 +18,31 @@ export class TechService {
 	async create(request: CreateTechDtoRequest): Promise<TechEntity> {
 		try {
 			const slug = createUniqueSlugHelper(request.slug);
-			await this.conflicTech(slug);
+			await this.conflicTech({ slug });
 			const entity = this.techRepository.create({
 				...request,
 				slug,
 			});
 
 			Logger.log('TECH_SERVICE#CREATE');
-			return await this.techRepository.save(entity);
+			return this.techRepository.save(entity);
 		} catch (error) {
 			Logger.error('TECH_SERVICE#CREATE', error);
 			throw error;
 		}
 	}
 
-	async findAll(query: FindAllTechDtoQuery): Promise<PaginationTechDtoResponse> {
+	async findAll(request: FindAllTechDtoRequest): Promise<PaginationTechDtoResponse> {
 		try {
-			const {
-				page = 1,
-				limit = 10,
-				sort = DefaultWhereSort.CREATED_AT,
-				order = DefaultWhereOrder.DESC,
-				search,
-			} = query;
+			const { page = 1, limit = 10, sort, order, search } = request;
 
 			const where: FindOptionsWhere<TechEntity>[] = search
-				? [{ name: Like(`%${search}%`) }, { slug: Like(`%${search}%`) }]
+				? [{ name: ILike(`%${search}%`) }, { slug: ILike(`%${search}%`) }]
 				: [{}];
 
 			const [data, count] = await this.techRepository.findAndCount({
 				where,
-				order: { [sort]: order },
+				order: { [sort as DefaultWhereSort]: order },
 				skip: (page - 1) * limit,
 				take: limit,
 			});
@@ -55,29 +50,30 @@ export class TechService {
 			Logger.log('TECH_SERVICE#FIND_ALL');
 
 			return {
-				data,
 				meta: {
 					page,
 					limit,
-					count: count,
+					count,
 					pages: Math.ceil(count / limit),
 				},
+				data,
 			};
 		} catch (error) {
-			Logger.error('PROJECT_SERVICE#FIND_ALL', error);
+			Logger.error('TECH_SERVICE#FIND_ALL', error);
 			throw error;
 		}
 	}
 
-	async findOne(id: string, withDeleted = false): Promise<TechEntity> {
+	async findOne(request: FindOneTechDtoRequest): Promise<TechEntity> {
 		try {
+			const { id, withDeleted } = request;
+
 			const entity = await this.techRepository.findOne({
 				where: { id },
 				withDeleted,
 			});
 
 			if (!entity) {
-				Logger.log('TECH_SERVICE#FIND_ONE');
 				throw new NotFoundException('Tech not found');
 			}
 
@@ -91,10 +87,10 @@ export class TechService {
 
 	async update(id: string, request: UpdateTechDtoRequest): Promise<TechEntity> {
 		try {
-			const entity = await this.findOne(id);
+			const entity = await this.findOne({ id });
 
 			if (request.slug && request.slug !== entity.slug) {
-				await this.conflicTech(request.slug);
+				await this.conflicTech({ slug: request.slug });
 			}
 
 			await this.techRepository.update(entity.id, {
@@ -103,7 +99,7 @@ export class TechService {
 			});
 
 			Logger.log('TECH_SERVICE#UPDATE');
-			return this.findOne(entity.id);
+			return this.findOne({ id });
 		} catch (error) {
 			Logger.error('TECH_SERVICE#UPDATE', error);
 			throw error;
@@ -112,9 +108,10 @@ export class TechService {
 
 	async delete(id: string): Promise<void> {
 		try {
-			await this.findOne(id);
-			await this.techRepository.softDelete(id);
+			await this.findOne({ id });
 			Logger.log('TECH_SERVICE#DELETE');
+
+			await this.techRepository.softDelete(id);
 		} catch (error) {
 			Logger.error('TECH_SERVICE#DELETE', error);
 			throw error;
@@ -123,9 +120,10 @@ export class TechService {
 
 	async restore(id: string): Promise<void> {
 		try {
-			const entity = await this.findOne(id, true);
-			await this.techRepository.restore(entity.id);
+			await this.findOne({ id, withDeleted: true });
 			Logger.log('TECH_SERVICE#RESTORE');
+
+			await this.techRepository.restore(id);
 		} catch (error) {
 			Logger.error('TECH_SERVICE#RESTORE', error);
 			throw error;
@@ -134,21 +132,25 @@ export class TechService {
 
 	async forceDelete(id: string): Promise<void> {
 		try {
-			const entity = await this.findOne(id);
-			await this.techRepository.delete(entity.id);
+			const entity = await this.findOne({ id, withDeleted: true });
 			Logger.log('TECH_SERVICE#FORCE_DELETE');
+
+			await this.techRepository.delete(entity.id);
 		} catch (error) {
 			Logger.error('TECH_SERVICE#FORCE_DELETE', error);
 			throw error;
 		}
 	}
 
-	private async conflicTech(slug: string): Promise<void> {
-		const entity = await this.techRepository.findOneBy({ slug });
+	private async conflicTech(request: FindOneTechDtoRequest): Promise<void> {
+		const entity = await this.techRepository.findOne({
+			where: {
+				slug: request.slug,
+			},
+		});
 
 		if (entity) {
-			Logger.log('TECH_SERVICE#CONFLICT', entity);
-			throw new ConflictException('Tech already exists');
+			throw new ConflictException('Category already exists');
 		}
 	}
 }
