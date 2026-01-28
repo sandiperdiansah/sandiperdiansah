@@ -1,12 +1,12 @@
 import { TechDto } from '@/app/tech/dto/tech.dto';
-import { faker } from '@faker-js/faker';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
 import {
 	DefaultFindAllDtoRequest,
 	DefaultFindOneDtoRequest,
 	DefaultMetaDtoResponse,
-} from 'src/default';
+} from '@/default';
+import { faker } from '@faker-js/faker';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
 
 // find all
 export class FindAllTechDtoRequest extends DefaultFindAllDtoRequest {}

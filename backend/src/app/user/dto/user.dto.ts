@@ -25,7 +25,9 @@ export class UserDto {
 	@ApiPropertyOptional({ example: faker.internet.email() })
 	email?: string;
 
-	@ApiPropertyOptional({ example: faker.phone.number({ style: 'international' }) })
+	@ApiPropertyOptional({
+		example: faker.phone.number({ style: 'international' }),
+	})
 	phone?: string;
 
 	@ApiPropertyOptional({ example: faker.image.avatar() })
@@ -38,10 +40,10 @@ export class UserDto {
 	role: DefaultUserRole;
 
 	@ApiPropertyOptional({ example: null })
-	emailVerifiedAt?: Date;
+	emailVerified?: Date;
 
 	@ApiPropertyOptional({ example: null })
-	phoneVerifiedAt?: Date;
+	phoneVerified?: Date;
 
 	@ApiProperty({ example: new Date() })
 	createdAt: Date;

@@ -1,11 +1,11 @@
 import { DefaultMediaType } from '@/default';
-import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateMsMediasTable1768418191661 implements MigrationInterface {
+export class CreateMediasTable1768741346820 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.createTable(
 			new Table({
-				name: 'ms_medias',
+				name: 'medias',
 				columns: [
 					{
 						name: 'id',
@@ -49,24 +49,9 @@ export class CreateMsMediasTable1768418191661 implements MigrationInterface {
 				],
 			}),
 		);
-
-		// Add foreign key constraint
-		await queryRunner.createForeignKey(
-			'ms_medias',
-			new TableForeignKey({
-				columnNames: ['projectId'],
-				referencedColumnNames: ['id'],
-				referencedTableName: 'ms_projects',
-				onDelete: 'CASCADE',
-				name: 'FK_medias_projects',
-			}),
-		);
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
-		// Drop foreign key first
-		await queryRunner.dropForeignKey('ms_medias', 'FK_medias_projects');
-		// Then drop table
 		await queryRunner.dropTable('ms_medias');
 	}
 }

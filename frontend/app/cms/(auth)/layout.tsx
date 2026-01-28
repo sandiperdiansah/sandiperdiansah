@@ -1,18 +1,22 @@
-import { Center, Container } from '@mantine/core';
+import { Center, Paper } from '@mantine/core';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <Container
-            pos="absolute"
+        <Center
             mih="100vh"
+            component="main"
         >
-            <Center
-                h="100%"
+            <Paper
+                component="section"
+                w="100%"
+                p="xl"
+                radius="md"
                 maw={400}
+                shadow="sm"
             >
                 {children}
-            </Center>
-        </Container>
+            </Paper>
+        </Center>
     );
 };
 

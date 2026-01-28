@@ -1,7 +1,7 @@
 import { DefaultUserRole } from '@/default';
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateUsersTable1768654969164 implements MigrationInterface {
+export class CreateUsersTable1768741261190 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.createTable(
 			new Table({
@@ -65,12 +65,12 @@ export class CreateUsersTable1768654969164 implements MigrationInterface {
 						default: `'${DefaultUserRole.USER}'`,
 					},
 					{
-						name: 'emailVerifiedAt',
+						name: 'emailVerified',
 						type: 'timestamptz',
 						isNullable: true,
 					},
 					{
-						name: 'phoneVerifiedAt',
+						name: 'phoneVerified',
 						type: 'timestamptz',
 						isNullable: true,
 					},

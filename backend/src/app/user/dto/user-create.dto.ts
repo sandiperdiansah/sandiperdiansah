@@ -43,7 +43,9 @@ export class CreateUserDtoRequest {
 	@IsEmail()
 	email?: string;
 
-	@ApiPropertyOptional({ example: faker.phone.number({ style: 'international' }) })
+	@ApiPropertyOptional({
+		example: faker.phone.number({ style: 'international' }),
+	})
 	@IsOptional()
 	@IsString()
 	@IsPhoneNumber()
@@ -55,7 +57,10 @@ export class CreateUserDtoRequest {
 	@IsUrl()
 	image?: string;
 
-	@ApiPropertyOptional({ example: DefaultUserRole.USER, enum: DefaultUserRole })
+	@ApiPropertyOptional({
+		example: DefaultUserRole.USER,
+		enum: DefaultUserRole,
+	})
 	@IsOptional()
 	@IsString()
 	@IsEnum(DefaultUserRole)

@@ -4,7 +4,13 @@ import { DefaultMediaType } from '@/default';
 import { faker } from '@faker-js/faker';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsOptional, IsString, IsUrl, ValidateNested } from 'class-validator';
+import {
+	IsArray,
+	IsOptional,
+	IsString,
+	IsUrl,
+	ValidateNested,
+} from 'class-validator';
 
 export class UpdateProjectDtoRequest {
 	@ApiPropertyOptional({ example: faker.lorem.word() })

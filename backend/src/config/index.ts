@@ -1,4 +1,5 @@
-export * from './app.config';
-export * from './i18n.config';
-export * from './swagger.config';
-export * from './typeorm.config';
+// swagger
+export * from './swagger/swagger.config.js';
+
+// typeOrm
+export * from './typeOrm/typeOrm.config.js';

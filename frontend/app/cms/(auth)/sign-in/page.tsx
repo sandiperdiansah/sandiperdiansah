@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, PasswordInput, Space, TextInput } from '@mantine/core';
+import { Button, PasswordInput, Stack, Text, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconLock, IconMail } from '@tabler/icons-react';
 
@@ -18,38 +18,49 @@ const Page = () => {
         },
     });
 
-    const handleSubmit = (values: typeof form.values) => {
+    const onSubmit = (values: typeof form.values) => {
         console.log(values);
         // call API login here
     };
 
     return (
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-            <TextInput
-                label="Email"
-                placeholder="Enter your email"
-                leftSection={<IconMail size={18} />}
-                {...form.getInputProps('email')}
-            />
+        <Stack>
+            <Stack>
+                <Title
+                    order={1}
+                    size="h3"
+                    fw={600}
+                >
+                    Sign In
+                </Title>
+                <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit.</Text>
+            </Stack>
 
-            <Space h="sm" />
+            <form onSubmit={form.onSubmit(onSubmit)}>
+                <Stack>
+                    <TextInput
+                        label="Email"
+                        placeholder="Enter your email"
+                        leftSection={<IconMail size={18} />}
+                        {...form.getInputProps('email')}
+                    />
 
-            <PasswordInput
-                label="Password"
-                placeholder="Enter your password"
-                leftSection={<IconLock size={18} />}
-                {...form.getInputProps('password')}
-            />
+                    <PasswordInput
+                        label="Password"
+                        placeholder="Enter your password"
+                        leftSection={<IconLock size={18} />}
+                        {...form.getInputProps('password')}
+                    />
 
-            <Space h="md" />
-
-            <Button
-                type="submit"
-                fullWidth
-            >
-                Sign In
-            </Button>
-        </form>
+                    <Button
+                        type="submit"
+                        fullWidth
+                    >
+                        Sign In
+                    </Button>
+                </Stack>
+            </form>
+        </Stack>
     );
 };
 

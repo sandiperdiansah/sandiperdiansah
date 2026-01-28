@@ -8,7 +8,12 @@ import {
 import { UserEntity } from '@/app/user/user.entity';
 import { UserRepository } from '@/app/user/user.repository';
 import { DefaultWhereSort, DefaultWhereStatus } from '@/default';
-import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+	ConflictException,
+	Injectable,
+	Logger,
+	NotFoundException,
+} from '@nestjs/common';
 import { FindOptionsWhere, ILike, IsNull, Not } from 'typeorm';
 
 @Injectable()
@@ -17,7 +22,7 @@ export class UserService {
 
 	async create(request: CreateUserDtoRequest): Promise<UserEntity> {
 		try {
-			await this.conflictUser(request);
+			await this.conflict(request);
 			const entity = this.userRepository.create(request);
 
 			Logger.log('USER_SERVICE#CREATE');
@@ -28,7 +33,9 @@ export class UserService {
 		}
 	}
 
-	async findAll(request: FindAllUserDtoRequest): Promise<PaginationUserDtoResponse> {
+	async findAll(
+		request: FindAllUserDtoRequest,
+	): Promise<PaginationUserDtoResponse> {
 		try {
 			const {
 				page = 1,
@@ -58,7 +65,7 @@ export class UserService {
 
 			if (filterEmailVerified) {
 				where.forEach((user) => {
-					user.emailVerifiedAt =
+					user.emailVerified =
 						filterEmailVerified === DefaultWhereStatus.ACTIVE
 							? Not(IsNull())
 							: IsNull();
@@ -67,7 +74,7 @@ export class UserService {
 
 			if (filterPhoneVerified) {
 				where.forEach((user) => {
-					user.phoneVerifiedAt =
+					user.phoneVerified =
 						filterPhoneVerified === DefaultWhereStatus.ACTIVE
 							? Not(IsNull())
 							: IsNull();
@@ -147,7 +154,7 @@ export class UserService {
 	async update(id: string, request: UpdateUserDtoRequest): Promise<UserEntity> {
 		try {
 			await this.findOne({ id });
-			await this.conflictUser(request);
+			await this.conflict(request);
 			await this.userRepository.update(id, request);
 
 			Logger.log('USER_SERVICE#UPDATE');
@@ -194,7 +201,7 @@ export class UserService {
 		}
 	}
 
-	async conflictUser(request: FindOneUserDtoRequest): Promise<void> {
+	async conflict(request: FindOneUserDtoRequest): Promise<void> {
 		const { username, email, phone } = request;
 		const where: FindOptionsWhere<UserEntity>[] = [{}];
 

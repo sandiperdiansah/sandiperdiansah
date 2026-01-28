@@ -8,7 +8,7 @@ import {
 	UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('ms_categories')
+@Entity('categories')
 export class CategoryEntity extends BaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;

@@ -1,12 +1,12 @@
 import { CategoryDto } from '@/app/category/dto';
-import { faker } from '@faker-js/faker';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
 import {
 	DefaultFindAllDtoRequest,
 	DefaultFindOneDtoRequest,
 	DefaultMetaDtoResponse,
-} from 'src/default';
+} from '@/default';
+import { faker } from '@faker-js/faker';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
 
 // find all
 export class FindAllCategoryDtoRequest extends DefaultFindAllDtoRequest {}

@@ -4,7 +4,7 @@ import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
 export class TechRepository extends Repository<TechEntity> {
-	constructor(readonly dataSource: DataSource) {
+	constructor(private readonly dataSource: DataSource) {
 		super(TechEntity, dataSource.createEntityManager());
 	}
 }

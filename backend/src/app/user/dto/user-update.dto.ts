@@ -7,12 +7,12 @@ export class UpdateUserDtoRequest extends CreateUserDtoRequest {
 	@ApiPropertyOptional({ example: new Date() })
 	@IsOptional()
 	@IsString()
-	emailVerifiedAt?: Date;
+	emailVerified?: Date;
 
 	@ApiPropertyOptional({ example: new Date() })
 	@IsOptional()
 	@IsString()
-	phoneVerifiedAt?: Date;
+	phoneVerified?: Date;
 }
 
 export class UpdateUserDtoResponse {

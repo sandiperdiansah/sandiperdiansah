@@ -1,3 +1,4 @@
+import { AccountEntity, SessionEntity } from '@/app/auth/entities';
 import { DefaultUserRole } from '@/default';
 import {
 	BaseEntity,
@@ -5,6 +6,7 @@ import {
 	CreateDateColumn,
 	DeleteDateColumn,
 	Entity,
+	OneToMany,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
@@ -38,14 +40,18 @@ export class UserEntity extends BaseEntity {
 	@Column({ type: 'text', nullable: true })
 	image?: string;
 
-	@Column({ type: 'enum', enum: DefaultUserRole, default: DefaultUserRole.USER })
+	@Column({
+		type: 'enum',
+		enum: DefaultUserRole,
+		default: DefaultUserRole.USER,
+	})
 	role: DefaultUserRole;
 
 	@Column({ type: 'timestamptz', nullable: true })
-	emailVerifiedAt?: Date;
+	emailVerified?: Date;
 
 	@Column({ type: 'timestamptz', nullable: true })
-	phoneVerifiedAt?: Date;
+	phoneVerified?: Date;
 
 	@CreateDateColumn({ type: 'timestamptz' })
 	createdAt: Date;
@@ -55,4 +61,11 @@ export class UserEntity extends BaseEntity {
 
 	@DeleteDateColumn({ type: 'timestamptz' })
 	deletedAt?: Date;
+
+	// relation
+	@OneToMany(() => AccountEntity, (account) => account.user)
+	accounts: AccountEntity[];
+
+	@OneToMany(() => SessionEntity, (session) => session.user)
+	sessions: SessionEntity[];
 }

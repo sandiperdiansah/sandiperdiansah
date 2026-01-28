@@ -6,12 +6,13 @@ import {
 	CreateDateColumn,
 	DeleteDateColumn,
 	Entity,
+	JoinColumn,
 	ManyToOne,
 	PrimaryGeneratedColumn,
 	UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('ms_medias')
+@Entity('medias')
 export class MediaEntity extends BaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
@@ -31,6 +32,9 @@ export class MediaEntity extends BaseEntity {
 	@DeleteDateColumn({ type: 'timestamptz' })
 	deletedAt?: Date;
 
-	@ManyToOne(() => ProjectEntity, (project) => project.medias)
+	@ManyToOne(() => ProjectEntity, (project) => project.medias, {
+		onDelete: 'CASCADE',
+	})
+	@JoinColumn({ name: 'projectId', referencedColumnName: 'id' })
 	project: ProjectEntity;
 }

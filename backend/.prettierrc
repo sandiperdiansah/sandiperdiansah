@@ -7,5 +7,5 @@
 	"bracketSpacing": true,
 	"singleAttributePerLine": true,
 	"semi": true,
-	"printWidth": 90
+	"printWidth": 85
 }

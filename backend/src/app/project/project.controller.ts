@@ -33,7 +33,7 @@ import {
 	ApiTags,
 } from '@nestjs/swagger';
 
-@ApiTags('MS Project')
+@ApiTags('Project')
 @Controller('projects')
 export class ProjectController {
 	constructor(private readonly projectService: ProjectService) {}

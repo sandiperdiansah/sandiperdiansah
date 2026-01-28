@@ -8,7 +8,12 @@ import {
 	UpdateCategoryDtoRequest,
 } from '@/app/category/dto';
 import { DefaultWhereSort, createUniqueSlugHelper } from '@/default';
-import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+	ConflictException,
+	Injectable,
+	Logger,
+	NotFoundException,
+} from '@nestjs/common';
 import { FindOptionsWhere, ILike } from 'typeorm';
 
 @Injectable()
@@ -18,7 +23,7 @@ export class CategoryService {
 	async create(request: CreateCategoryDtoRequest): Promise<CategoryEntity> {
 		try {
 			const slug = createUniqueSlugHelper(request.slug);
-			await this.conflicCategory({ slug });
+			await this.conflict({ slug });
 			const entity = this.categoryRepository.create({
 				...request,
 				slug,
@@ -87,17 +92,22 @@ export class CategoryService {
 		}
 	}
 
-	async update(id: string, request: UpdateCategoryDtoRequest): Promise<CategoryEntity> {
+	async update(
+		id: string,
+		request: UpdateCategoryDtoRequest,
+	): Promise<CategoryEntity> {
 		try {
 			const entity = await this.findOne({ id });
 
 			if (request.slug && request.slug !== entity.slug) {
-				await this.conflicCategory({ slug: request.slug });
+				await this.conflict({ slug: request.slug });
 			}
 
 			await this.categoryRepository.update(entity.id, {
 				...request,
-				slug: request.slug ? createUniqueSlugHelper(request.slug) : entity.slug,
+				slug: request.slug
+					? createUniqueSlugHelper(request.slug)
+					: entity.slug,
 			});
 
 			Logger.log('CATEGORY_SERVICE#UPDATE');
@@ -144,7 +154,7 @@ export class CategoryService {
 		}
 	}
 
-	private async conflicCategory(request: FindOneCategoryDtoRequest): Promise<void> {
+	private async conflict(request: FindOneCategoryDtoRequest): Promise<void> {
 		const entity = await this.categoryRepository.findOne({
 			where: {
 				slug: request.slug,

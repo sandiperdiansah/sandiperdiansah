@@ -9,22 +9,30 @@ import {
 import { ProjectEntity } from '@/app/project/project.entity';
 import { ProjectRepository } from '@/app/project/project.repository';
 import { DefaultWhereSort, createUniqueSlugHelper } from '@/default';
-import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { FindOptionsWhere, ILike, QueryRunner } from 'typeorm';
+import {
+	ConflictException,
+	Injectable,
+	Logger,
+	NotFoundException,
+} from '@nestjs/common';
+import { DataSource, FindOptionsWhere, ILike, QueryRunner } from 'typeorm';
 
 @Injectable()
 export class ProjectService {
-	constructor(private readonly projectRepository: ProjectRepository) {}
+	constructor(
+		private readonly projectRepository: ProjectRepository,
+		private readonly dataSource: DataSource,
+	) {}
 
 	async create(request: CreateProjectDtoRequest): Promise<ProjectEntity> {
-		const queryRunner = this.projectRepository.dataSource.createQueryRunner();
+		const queryRunner = this.dataSource.createQueryRunner();
 
 		await queryRunner.connect();
 		await queryRunner.startTransaction();
 
 		try {
 			const slug = createUniqueSlugHelper(request.slug);
-			await this.conflicProject({ slug }, queryRunner);
+			await this.conflict({ slug }, queryRunner);
 
 			const projectEntity = await queryRunner.manager.save(
 				ProjectEntity,
@@ -45,10 +53,13 @@ export class ProjectService {
 				await queryRunner.manager.save(MediaEntity, mediaEntities);
 			}
 
-			const projectWithMedias = await queryRunner.manager.findOne(ProjectEntity, {
-				where: { id: projectEntity.id },
-				relations: ['medias'],
-			});
+			const projectWithMedias = await queryRunner.manager.findOne(
+				ProjectEntity,
+				{
+					where: { id: projectEntity.id },
+					relations: ['medias'],
+				},
+			);
 
 			if (!projectWithMedias) {
 				throw new NotFoundException('Project not found');
@@ -107,13 +118,12 @@ export class ProjectService {
 	): Promise<ProjectEntity> {
 		try {
 			const { id, withDeleted } = request;
-			const entity = await (queryRunner?.manager || this.projectRepository).findOne(
-				ProjectEntity,
-				{
-					where: { id },
-					withDeleted,
-				},
-			);
+			const entity = await (
+				queryRunner?.manager || this.projectRepository
+			).findOne(ProjectEntity, {
+				where: { id },
+				withDeleted,
+			});
 
 			if (!entity) {
 				throw new NotFoundException('Project not found');
@@ -127,17 +137,23 @@ export class ProjectService {
 		}
 	}
 
-	async update(id: string, request: UpdateProjectDtoRequest): Promise<ProjectEntity> {
-		const queryRunner = this.projectRepository.dataSource.createQueryRunner();
+	async update(
+		id: string,
+		request: UpdateProjectDtoRequest,
+	): Promise<ProjectEntity> {
+		const queryRunner = this.dataSource.createQueryRunner();
 
 		await queryRunner.connect();
 		await queryRunner.startTransaction();
 
 		try {
-			const entity = await this.findOne({ id, withDeleted: false }, queryRunner);
+			const entity = await this.findOne(
+				{ id, withDeleted: false },
+				queryRunner,
+			);
 
 			if (request.slug && request.slug !== entity.slug) {
-				await this.conflicProject({ slug: request.slug }, queryRunner);
+				await this.conflict({ slug: request.slug }, queryRunner);
 			}
 
 			const projectEntity = await queryRunner.manager.save(
@@ -161,10 +177,13 @@ export class ProjectService {
 				await queryRunner.manager.save(MediaEntity, mediaEntities);
 			}
 
-			const projectWithMedias = await queryRunner.manager.findOne(ProjectEntity, {
-				where: { id: projectEntity.id },
-				relations: ['medias'],
-			});
+			const projectWithMedias = await queryRunner.manager.findOne(
+				ProjectEntity,
+				{
+					where: { id: projectEntity.id },
+					relations: ['medias'],
+				},
+			);
 
 			if (!projectWithMedias) {
 				throw new NotFoundException('Project not found');
@@ -219,7 +238,7 @@ export class ProjectService {
 		}
 	}
 
-	private async conflicProject(
+	private async conflict(
 		request: FindOneProjectDtoRequest,
 		queryRunner: QueryRunner,
 	): Promise<void> {

@@ -42,7 +42,9 @@ export class UserController {
 	@ApiConflictResponse({ type: () => ConflictUserDtoResponse })
 	@HttpCode(HttpStatus.CREATED)
 	@Post()
-	async create(@Body() body: CreateUserDtoRequest): Promise<CreateUserDtoResponse> {
+	async create(
+		@Body() body: CreateUserDtoRequest,
+	): Promise<CreateUserDtoResponse> {
 		const response = await this.userService.create(body);
 		return {
 			message: 'Create user successful',

@@ -1,17 +1,21 @@
-import { Module } from '@nestjs/common';
-
 import { AppModule } from '@/app/app.module';
+import { typeOrmAsyncConfig } from '@/config';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { typeOrmConfig } from 'src/config';
 
 @Module({
 	imports: [
 		ConfigModule.forRoot({
 			isGlobal: true,
-			envFilePath: '.env',
+			envFilePath: [
+				'.env.production',
+				'.env.staging',
+				'.env.development',
+				'.env',
+			],
 		}),
-		TypeOrmModule.forRoot(typeOrmConfig),
+		TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
 		AppModule,
 	],
 })

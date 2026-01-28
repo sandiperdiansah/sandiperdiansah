@@ -33,7 +33,7 @@ import {
 	ApiTags,
 } from '@nestjs/swagger';
 
-@ApiTags('MS Tech')
+@ApiTags('Tech')
 @Controller('techs')
 export class TechController {
 	constructor(private readonly techService: TechService) {}
@@ -43,7 +43,9 @@ export class TechController {
 	@ApiConflictResponse({ type: ConflictTechDtoResponse })
 	@HttpCode(HttpStatus.CREATED)
 	@Post()
-	async create(@Body() body: CreateTechDtoRequest): Promise<CreateTechDtoResponse> {
+	async create(
+		@Body() body: CreateTechDtoRequest,
+	): Promise<CreateTechDtoResponse> {
 		const response = await this.techService.create(body);
 		return {
 			message: 'Create tech successful',

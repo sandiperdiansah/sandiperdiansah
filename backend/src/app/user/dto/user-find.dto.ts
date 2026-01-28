@@ -1,14 +1,20 @@
 import { UserDto } from '@/app/user/dto/user.dto';
-import { faker } from '@faker-js/faker';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsEnum, IsOptional, IsPhoneNumber, IsString } from 'class-validator';
 import {
 	DefaultFindAllDtoRequest,
 	DefaultFindOneDtoRequest,
 	DefaultMetaDtoResponse,
 	DefaultUserRole,
 	DefaultWhereStatus,
-} from 'src/default';
+} from '@/default';
+import { faker } from '@faker-js/faker';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import {
+	IsEmail,
+	IsEnum,
+	IsOptional,
+	IsPhoneNumber,
+	IsString,
+} from 'class-validator';
 
 // find all
 export class FindAllUserDtoRequest extends DefaultFindAllDtoRequest {

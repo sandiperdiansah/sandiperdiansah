@@ -10,7 +10,7 @@ import {
 	UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('ms_projects')
+@Entity('projects')
 export class ProjectEntity extends BaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
@@ -36,6 +36,7 @@ export class ProjectEntity extends BaseEntity {
 	@DeleteDateColumn({ type: 'timestamptz' })
 	deletedAt?: Date;
 
+	// relation
 	@OneToMany(() => MediaEntity, (media) => media.project)
 	medias?: MediaEntity[];
 }

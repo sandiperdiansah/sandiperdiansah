@@ -8,7 +8,12 @@ import {
 import { TechEntity } from '@/app/tech/tech.entity';
 import { TechRepository } from '@/app/tech/tech.repository';
 import { DefaultWhereSort, createUniqueSlugHelper } from '@/default';
-import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+	ConflictException,
+	Injectable,
+	Logger,
+	NotFoundException,
+} from '@nestjs/common';
 import { FindOptionsWhere, ILike } from 'typeorm';
 
 @Injectable()
@@ -18,7 +23,7 @@ export class TechService {
 	async create(request: CreateTechDtoRequest): Promise<TechEntity> {
 		try {
 			const slug = createUniqueSlugHelper(request.slug);
-			await this.conflicTech({ slug });
+			await this.conflict({ slug });
 			const entity = this.techRepository.create({
 				...request,
 				slug,
@@ -32,7 +37,9 @@ export class TechService {
 		}
 	}
 
-	async findAll(request: FindAllTechDtoRequest): Promise<PaginationTechDtoResponse> {
+	async findAll(
+		request: FindAllTechDtoRequest,
+	): Promise<PaginationTechDtoResponse> {
 		try {
 			const { page = 1, limit = 10, sort, order, search } = request;
 
@@ -90,12 +97,14 @@ export class TechService {
 			const entity = await this.findOne({ id });
 
 			if (request.slug && request.slug !== entity.slug) {
-				await this.conflicTech({ slug: request.slug });
+				await this.conflict({ slug: request.slug });
 			}
 
 			await this.techRepository.update(entity.id, {
 				...request,
-				slug: request.slug ? createUniqueSlugHelper(request.slug) : entity.slug,
+				slug: request.slug
+					? createUniqueSlugHelper(request.slug)
+					: entity.slug,
 			});
 
 			Logger.log('TECH_SERVICE#UPDATE');
@@ -142,7 +151,7 @@ export class TechService {
 		}
 	}
 
-	private async conflicTech(request: FindOneTechDtoRequest): Promise<void> {
+	private async conflict(request: FindOneTechDtoRequest): Promise<void> {
 		const entity = await this.techRepository.findOne({
 			where: {
 				slug: request.slug,
