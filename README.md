@@ -5,8 +5,6 @@ building responsive web applications, integrating RESTful APIs, and working with
 non-relational databases. Strong foundation in modern JavaScript frameworks and eagerness to 
 learn and grow in a professional software development environment. 
 
---
-
 ## Tech Stack
 
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square\&logo=javascript\&logoColor=black)
@@ -20,13 +18,10 @@ learn and grow in a professional software development environment.
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square\&logo=mysql\&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square\&logo=mongodb\&logoColor=white)
 
---
-
 ## WakaTime
 
 [![wakatime](https://wakatime.com/badge/user/f141defe-4ab4-412a-9268-a99cc646a38f.svg)](https://wakatime.com/@f141defe-4ab4-412a-9268-a99cc646a38f)
 
---
 
 ## GitHub Stats
 
@@ -35,7 +30,6 @@ learn and grow in a professional software development environment.
   <img height="170" src="https://github-readme-stats.vercel.app/api/top-langs/?username=sandiperdiansah&layout=compact&hide_border=true&theme=transparent"/>
 </p>
 
---
 
 ## GitHub Streak
 
@@ -43,7 +37,6 @@ learn and grow in a professional software development environment.
   <img src="https://streak-stats.demolab.com?user=sandiperdiansah&theme=transparent&hide_border=true"/>
 </p>
 
---
 
 ## Activity Graph
 
@@ -51,7 +44,6 @@ learn and grow in a professional software development environment.
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=sandiperdiansah&theme=github-compact"/>
 </p>
 
---
 
 ## Contact
 
